@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.codextension.pi</groupId>
+    <artifactId>temp-sensor</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.1.RELEASE</version>
+    </parent>
+
+    <properties>
+        <pi4j.version>1.1</pi4j.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.pi4j/pi4j-core -->
+        <dependency>
+            <groupId>com.pi4j</groupId>
+            <artifactId>pi4j-core</artifactId>
+            <version>${pi4j.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.pi4j/pi4j-device -->
+        <dependency>
+            <groupId>com.pi4j</groupId>
+            <artifactId>pi4j-device</artifactId>
+            <version>${pi4j.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.pi4j/pi4j-gpio-extension -->
+        <dependency>
+            <groupId>com.pi4j</groupId>
+            <artifactId>pi4j-gpio-extension</artifactId>
+            <version>${pi4j.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.pi4j/pi4j-service -->
+        <dependency>
+            <groupId>com.pi4j</groupId>
+            <artifactId>pi4j-service</artifactId>
+            <version>${pi4j.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.pi4j/pi4j-native -->
+        <dependency>
+            <groupId>com.pi4j</groupId>
+            <artifactId>pi4j-native</artifactId>
+            <version>${pi4j.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <repositories>
+        <repository>
+            <id>project</id>
+            <url>https://sbs.t-systems.com/nexus/content/groups/tng/</url>
+        </repository>
+        <repository>
+            <id>public</id>
+            <url>https://sbs.t-systems.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>project</id>
+            <url>https://sbs.t-systems.com/nexus/content/groups/tng/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>public</id>
+            <url>https://sbs.t-systems.com/nexus/content/groups/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>Internal Releases</name>
+            <url> https://sbs.t-systems.com/nexus/content/repositories/tng-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Internal Snapshots</name>
+            <url>https://sbs.t-systems.com/nexus/content/repositories/tng-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>
