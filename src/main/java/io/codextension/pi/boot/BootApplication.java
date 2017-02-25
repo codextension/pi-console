@@ -20,13 +20,17 @@ public class BootApplication {
 
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        return args -> {
+    	return new CommandLineRunner() {
+            @Override
+            public void run(String... strings) throws Exception {
 
-            GpioController gpio = GpioFactory.getInstance();
-            GpioPinDigitalOutput myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_17,   // PIN NUMBER
-                                                                       "My LED",           // PIN FRIENDLY NAME (optional)
-                                                                       PinState.LOW);      // PIN STARTUP STATE (optional)
-            myLed.high();
+                GpioController gpio = GpioFactory.getInstance();
+                GpioPinDigitalOutput myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_27,   // PIN NUMBER
+                                                                           "My LED",           // PIN FRIENDLY NAME (optional)
+                                                                           PinState.LOW);      // PIN STARTUP STATE (optional)
+                myLed.high();
+
+            }
         };
     }
 }
