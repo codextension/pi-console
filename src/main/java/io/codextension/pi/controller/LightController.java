@@ -27,7 +27,7 @@ public class LightController {
     }
 
     @RequestMapping(value = "/lights/{state}", method = RequestMethod.GET)
-    public String switchLights(@PathVariable(required = true, value = "off") String state, Model model) {
+    public String switchLights(@PathVariable(value = "off", required = true, name = "state") String state, Model model) {
         GpioPinDigitalOutput myLed_1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "My LED 1");
         GpioPinDigitalOutput myLed_2 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "My LED 2");
 
