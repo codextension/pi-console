@@ -30,6 +30,8 @@ public class LightController {
             myLed_1.high();
             myLed_2.high();
         }
+        gpio.unprovisionPin(myLed_1);
+        gpio.unprovisionPin(myLed_2);
         gpio.shutdown();
         return "Setting light state to: " + state;
     }
