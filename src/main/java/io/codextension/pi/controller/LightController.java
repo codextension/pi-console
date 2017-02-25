@@ -5,10 +5,7 @@ import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.RaspiPin;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PreDestroy;
 
@@ -29,7 +26,7 @@ public class LightController {
         gpio.shutdown();
     }
 
-    @RequestMapping("/lights/{state}")
+    @RequestMapping(value = "/lights/{state}", method = RequestMethod.GET)
     public String switchLights(@PathVariable(required = true, value = "off") String state, Model model) {
         GpioPinDigitalOutput myLed_1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "My LED 1");
         GpioPinDigitalOutput myLed_2 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "My LED 2");
