@@ -26,10 +26,8 @@ public class LightController {
         } else if (state.equalsIgnoreCase("on")) {
             myLed_1.high();
             myLed_2.high();
-        }else if (state.equalsIgnoreCase("blink")) {
-            myLed_1.blink(3000);
-            myLed_2.blink(3000);
         }
+
         gpio.unprovisionPin(myLed_1);
         gpio.unprovisionPin(myLed_2);
         gpio.shutdown();
