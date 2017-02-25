@@ -25,7 +25,7 @@ public class BootApplication {
             public void run(String... strings) throws Exception {
 
                 GpioController gpio = GpioFactory.getInstance();
-                GpioPinDigitalOutput myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_27,   // PIN NUMBER
+                GpioPinDigitalOutput myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02,   // PIN NUMBER
                                                                            "My LED",           // PIN FRIENDLY NAME (optional)
                                                                            PinState.LOW);      // PIN STARTUP STATE (optional)
                 myLed.high();
