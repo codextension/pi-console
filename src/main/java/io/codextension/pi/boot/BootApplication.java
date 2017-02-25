@@ -1,6 +1,5 @@
 package io.codextension.pi.boot;
 
-import com.pi4j.io.gpio.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,11 +23,11 @@ public class BootApplication {
             @Override
             public void run(String... strings) throws Exception {
 
-                GpioController gpio = GpioFactory.getInstance();
+/*                GpioController gpio = GpioFactory.getInstance();
                 GpioPinDigitalOutput myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02,   // PIN NUMBER
                                                                            "My LED",           // PIN FRIENDLY NAME (optional)
                                                                            PinState.LOW);      // PIN STARTUP STATE (optional)
-                myLed.high();
+                myLed.high();*/
 
             }
         };
