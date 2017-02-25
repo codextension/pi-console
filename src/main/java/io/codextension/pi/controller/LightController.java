@@ -1,9 +1,6 @@
 package io.codextension.pi.controller;
 
-import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioFactory;
-import com.pi4j.io.gpio.GpioPinDigitalOutput;
-import com.pi4j.io.gpio.RaspiPin;
+import com.pi4j.io.gpio.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +26,9 @@ public class LightController {
         } else if (state.equalsIgnoreCase("on")) {
             myLed_1.high();
             myLed_2.high();
+        }else if (state.equalsIgnoreCase("blink")) {
+            myLed_1.blink(3000);
+            myLed_2.blink(3000);
         }
         gpio.unprovisionPin(myLed_1);
         gpio.unprovisionPin(myLed_2);
