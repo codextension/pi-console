@@ -29,31 +29,6 @@
             <artifactId>pi4j-core</artifactId>
             <version>${pi4j.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.pi4j/pi4j-device -->
-        <dependency>
-            <groupId>com.pi4j</groupId>
-            <artifactId>pi4j-device</artifactId>
-            <version>${pi4j.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.pi4j/pi4j-gpio-extension -->
-        <dependency>
-            <groupId>com.pi4j</groupId>
-            <artifactId>pi4j-gpio-extension</artifactId>
-            <version>${pi4j.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.pi4j/pi4j-service -->
-        <dependency>
-            <groupId>com.pi4j</groupId>
-            <artifactId>pi4j-service</artifactId>
-            <version>${pi4j.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.pi4j/pi4j-native -->
-        <dependency>
-            <groupId>com.pi4j</groupId>
-            <artifactId>pi4j-native</artifactId>
-            <version>${pi4j.version}</version>
-        </dependency>
-
     </dependencies>
 
     <build>

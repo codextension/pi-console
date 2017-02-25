@@ -22,7 +22,7 @@ public class BootApplication {
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
 
-            final GpioController gpio = GpioFactory.getInstance();
+            GpioController gpio = GpioFactory.getInstance();
             GpioPinDigitalOutput myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_17,   // PIN NUMBER
                                                                        "My LED",           // PIN FRIENDLY NAME (optional)
                                                                        PinState.LOW);      // PIN STARTUP STATE (optional)
