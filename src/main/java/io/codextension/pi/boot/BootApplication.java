@@ -45,7 +45,9 @@ public class BootApplication {
                 writeToFile("date,temperate,humidity");
                 while (true) {
                     DHT value = reader.getValue();
-                    writeToFile(value.toString());
+                    if (value != null) {
+                        writeToFile(value.toString());
+                    }
                     Thread.sleep(Timer.ONE_MINUTE);
                 }
             }
