@@ -11,13 +11,14 @@ public class DhtReader {
     private int[] dht11_dat = {0, 0, 0, 0, 0};
     private static final int PIN_NB = 4;
 
-    public DhtReader() {
-
+    static {
         // setup wiringPi
         if (Gpio.wiringPiSetup() == -1) {
             System.out.println(" ==>> GPIO SETUP FAILED");
-            return;
         }
+    }
+
+    public DhtReader() {
 
         GpioUtil.export(PIN_NB, GpioUtil.DIRECTION_OUT);
     }
