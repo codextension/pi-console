@@ -6,12 +6,12 @@ import com.pi4j.wiringpi.GpioUtil;
 /**
  * Created by elie on 26.02.2017.
  */
-public class DHT11 {
+public class DhtReader {
     private static final int MAXTIMINGS = 85;
     private int[] dht11_dat = {0, 0, 0, 0, 0};
-    private static final int PIN_NB = 22;
+    private static final int PIN_NB = 4;
 
-    public DHT11() {
+    public DhtReader() {
 
         // setup wiringPi
         if (Gpio.wiringPiSetup() == -1) {
@@ -22,7 +22,7 @@ public class DHT11 {
         GpioUtil.export(PIN_NB, GpioUtil.DIRECTION_OUT);
     }
 
-    public void getTemperature() {
+    public DHT getValue() {
         int laststate = Gpio.HIGH;
         int j = 0;
         dht11_dat[0] = dht11_dat[1] = dht11_dat[2] = dht11_dat[3] = dht11_dat[4] = 0;
@@ -75,9 +75,9 @@ public class DHT11 {
                 c = -c;
             }
             float f = c * 1.8f + 32;
-            System.out.println("Humidity = " + h + " Temperature = " + c + "(" + f + "f)");
+            return new DHT(c, h);
         } else {
-            System.out.println("Data not good, skip");
+            return null;
         }
 
     }

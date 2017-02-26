@@ -1,6 +1,5 @@
 package io.codextension.pi.boot;
 
-import io.codextension.pi.component.DHT11;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,15 +22,6 @@ public class BootApplication {
         return new CommandLineRunner() {
             @Override
             public void run(String... strings) throws Exception {
-
-                DHT11 dht = new DHT11();
-
-                for (int i = 0; i < 10; i++) {
-                    Thread.sleep(2000);
-                    dht.getTemperature();
-                }
-
-                System.out.println("Done!!");
 
             }
         };
