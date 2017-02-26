@@ -1,11 +1,19 @@
 package io.codextension.pi.boot;
 
+import io.codextension.pi.component.DHT;
+import io.codextension.pi.component.DhtReader;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+
+import javax.management.timer.Timer;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Created by eelkhour on 24.02.2017.
@@ -17,12 +25,29 @@ public class BootApplication {
         SpringApplication.run(BootApplication.class, args);
     }
 
+    private void writeToFile(String text) {
+        try (FileWriter fw = new FileWriter("dht.data", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+
+            out.println(text);
+        } catch (IOException e) {
+            //exception handling left as an exercise for the reader
+        }
+    }
+
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return new CommandLineRunner() {
             @Override
             public void run(String... strings) throws Exception {
-
+                DhtReader reader = new DhtReader();
+                writeToFile("date,temperate,humidity");
+                while (true) {
+                    DHT value = reader.getValue();
+                    writeToFile(value.toString());
+                    Thread.sleep(Timer.ONE_MINUTE);
+                }
             }
         };
     }

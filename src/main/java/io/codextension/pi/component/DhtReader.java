@@ -69,7 +69,7 @@ public class DhtReader {
             if ((dht11_dat[2] & 0x80) != 0) {
                 c = -c;
             }
-            float f = c * 1.8f + 32;
+
             return new DHT(c, h);
         } else {
             return null;
