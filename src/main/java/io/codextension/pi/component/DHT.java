@@ -39,6 +39,6 @@ public class DHT implements Serializable {
     }
 
     public String toString(){
-        return measuredDate + "," + temperature + "," + humidity;
+        return measuredDate + ";" + temperature + ";" + humidity;
     }
 }

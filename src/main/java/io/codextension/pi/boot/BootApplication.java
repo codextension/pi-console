@@ -42,7 +42,7 @@ public class BootApplication {
             @Override
             public void run(String... strings) throws Exception {
                 DhtReader reader = new DhtReader();
-                writeToFile("date,temperate,humidity");
+                writeToFile("date;temperate;humidity");
                 while (true) {
                     DHT value = reader.getValue();
                     if (value != null) {
