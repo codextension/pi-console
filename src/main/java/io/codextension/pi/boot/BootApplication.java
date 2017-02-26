@@ -1,5 +1,6 @@
 package io.codextension.pi.boot;
 
+import io.codextension.pi.component.DHT11;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,15 +20,18 @@ public class BootApplication {
 
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-    	return new CommandLineRunner() {
+        return new CommandLineRunner() {
             @Override
             public void run(String... strings) throws Exception {
 
-/*                GpioController gpio = GpioFactory.getInstance();
-                GpioPinDigitalOutput myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02,   // PIN NUMBER
-                                                                           "My LED",           // PIN FRIENDLY NAME (optional)
-                                                                           PinState.LOW);      // PIN STARTUP STATE (optional)
-                myLed.high();*/
+                DHT11 dht = new DHT11();
+
+                for (int i = 0; i < 10; i++) {
+                    Thread.sleep(2000);
+                    dht.getTemperature();
+                }
+
+                System.out.println("Done!!");
 
             }
         };
