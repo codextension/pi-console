@@ -47,8 +47,9 @@ public class BootApplication {
                     DHT value = reader.getValue();
                     if (value != null) {
                         writeToFile(value.toString());
+                        System.out.println(value.getMeasuredDate() + " --> " + value.getTemperature() + " *C, " + value.getHumidity() + "%");
                     }
-                    Thread.sleep(Timer.ONE_MINUTE);
+                    Thread.sleep(Timer.ONE_MINUTE * 15);
                 }
             }
         };
