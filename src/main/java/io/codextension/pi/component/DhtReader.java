@@ -1,5 +1,7 @@
 package io.codextension.pi.component;
 
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.GpioUtil;
 
@@ -11,19 +13,10 @@ public class DhtReader {
     private int[] dht11_dat = {0, 0, 0, 0, 0};
     private static final int PIN_NB = 4;
 
-    static {
-        // setup wiringPi
-        if (Gpio.wiringPiSetup() == -1) {
-            System.out.println(" ==>> GPIO SETUP FAILED");
-        }
-    }
-
-    public DhtReader() {
-
-        GpioUtil.export(PIN_NB, GpioUtil.DIRECTION_OUT);
-    }
-
     public DHT getValue() {
+        GpioController gpio = GpioFactory.getInstance();
+        GpioUtil.export(PIN_NB, GpioUtil.DIRECTION_OUT);
+
         int laststate = Gpio.HIGH;
         int j = 0;
         dht11_dat[0] = dht11_dat[1] = dht11_dat[2] = dht11_dat[3] = dht11_dat[4] = 0;
@@ -61,6 +54,7 @@ public class DhtReader {
                 j++;
             }
         }
+        gpio.shutdown();
         // check we read 40 bits (8bit x 5 ) + verify checksum in the last
         // byte
         if ((j >= 40) && checkParity()) {
@@ -87,3 +81,4 @@ public class DhtReader {
         return (dht11_dat[4] == ((dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF));
     }
 }
+
