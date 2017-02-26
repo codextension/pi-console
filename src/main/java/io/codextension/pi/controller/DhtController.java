@@ -11,7 +11,7 @@ import java.util.Date;
  * Created by elie on 26.02.2017.
  */
 @RestController
-@RequestMapping("/dht")
+@RequestMapping("/temp")
 public class DhtController {
     private static long lastCallTimestamp = 0;
 
