@@ -9,6 +9,7 @@ import com.pi4j.wiringpi.GpioUtil;
 public class DHT11 {
     private static final int MAXTIMINGS = 85;
     private int[] dht11_dat = {0, 0, 0, 0, 0};
+    private static final int PIN_NB = 22;
 
     public DHT11() {
 
@@ -18,7 +19,7 @@ public class DHT11 {
             return;
         }
 
-        GpioUtil.export(3, GpioUtil.DIRECTION_OUT);
+        GpioUtil.export(PIN_NB, GpioUtil.DIRECTION_OUT);
     }
 
     public void getTemperature() {
@@ -26,16 +27,16 @@ public class DHT11 {
         int j = 0;
         dht11_dat[0] = dht11_dat[1] = dht11_dat[2] = dht11_dat[3] = dht11_dat[4] = 0;
 
-        Gpio.pinMode(3, Gpio.OUTPUT);
-        Gpio.digitalWrite(3, Gpio.LOW);
+        Gpio.pinMode(PIN_NB, Gpio.OUTPUT);
+        Gpio.digitalWrite(PIN_NB, Gpio.LOW);
         Gpio.delay(18);
 
-        Gpio.digitalWrite(3, Gpio.HIGH);
-        Gpio.pinMode(3, Gpio.INPUT);
+        Gpio.digitalWrite(PIN_NB, Gpio.HIGH);
+        Gpio.pinMode(PIN_NB, Gpio.INPUT);
 
         for (int i = 0; i < MAXTIMINGS; i++) {
             int counter = 0;
-            while (Gpio.digitalRead(3) == laststate) {
+            while (Gpio.digitalRead(PIN_NB) == laststate) {
                 counter++;
                 Gpio.delayMicroseconds(1);
                 if (counter == 255) {
@@ -43,7 +44,7 @@ public class DHT11 {
                 }
             }
 
-            laststate = Gpio.digitalRead(3);
+            laststate = Gpio.digitalRead(PIN_NB);
 
             if (counter == 255) {
                 break;
