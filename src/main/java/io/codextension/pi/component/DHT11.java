@@ -84,18 +84,4 @@ public class DHT11 {
     private boolean checkParity() {
         return (dht11_dat[4] == ((dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF));
     }
-
-
-    public static void main(String ars[]) throws Exception {
-
-        DHT11 dht = new DHT11();
-
-        for (int i = 0; i < 10; i++) {
-            Thread.sleep(2000);
-            dht.getTemperature();
-        }
-
-        System.out.println("Done!!");
-
-    }
 }
