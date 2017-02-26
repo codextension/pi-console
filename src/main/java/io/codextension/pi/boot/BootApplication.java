@@ -26,7 +26,7 @@ public class BootApplication {
     }
 
     private void writeToFile(String text) {
-        try (FileWriter fw = new FileWriter("dht.data", true);
+        try (FileWriter fw = new FileWriter("dht.csv", true);
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
 
