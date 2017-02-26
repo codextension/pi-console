@@ -17,8 +17,8 @@ public class LightController {
     @RequestMapping(value = "/{state}", method = RequestMethod.GET)
     public String switchLights(@PathVariable(required = true, name = "state") String state, Model model) {
         GpioController gpio = GpioFactory.getInstance();
-        GpioPinDigitalOutput myLed_1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_12, "My LED 1");
-        GpioPinDigitalOutput myLed_2 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_13, "My LED 2");
+        GpioPinDigitalOutput myLed_1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "My LED 1");
+        GpioPinDigitalOutput myLed_2 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "My LED 2");
 
         if (state.equalsIgnoreCase("off")) {
             myLed_1.low();
