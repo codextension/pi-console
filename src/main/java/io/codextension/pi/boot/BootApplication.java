@@ -14,6 +14,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Calendar;
 
 /**
  * Created by eelkhour on 24.02.2017.
@@ -26,7 +27,8 @@ public class BootApplication {
     }
 
     private void writeToFile(String text) {
-        try (FileWriter fw = new FileWriter("temp_humidity.csv", true);
+        Calendar calendar = Calendar.getInstance();
+        try (FileWriter fw = new FileWriter(calendar.get(Calendar.DAY_OF_MONTH) + "." + calendar.get(Calendar.MONTH) + "." + calendar.get(Calendar.YEAR) +".csv", true);
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
 
@@ -49,7 +51,7 @@ public class BootApplication {
                         writeToFile(value.toString());
                         System.out.println(value.getMeasuredDate() + " --> " + value.getTemperature() + " *C, " + value.getHumidity() + "%");
                     }
-                    Thread.sleep(Timer.ONE_MINUTE * 15);
+                    Thread.sleep(Timer.ONE_SECOND * 5);
                 }
             }
         };

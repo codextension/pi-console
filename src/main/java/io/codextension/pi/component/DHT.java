@@ -1,7 +1,7 @@
 package io.codextension.pi.component;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Created by elie on 26.02.2017.
@@ -10,15 +10,17 @@ public class DHT implements Serializable {
 
     private float temperature;
     private float humidity;
-    private Date measuredDate;
+    private String measuredDate;
 
     public DHT(float temperature, float humidity) {
         this.temperature = temperature;
         this.humidity = humidity;
-        this.measuredDate = new Date();
+
+        Calendar instance = Calendar.getInstance();
+        this.measuredDate = instance.get(Calendar.HOUR_OF_DAY) + ":" + instance.get(Calendar.MINUTE);
     }
 
-    public Date getMeasuredDate() {
+    public String getMeasuredDate() {
         return measuredDate;
     }
 
