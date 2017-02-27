@@ -17,7 +17,7 @@ public class DHT implements Serializable {
         this.humidity = humidity;
 
         Calendar instance = Calendar.getInstance();
-        this.measuredDate = instance.get(Calendar.HOUR_OF_DAY) + ":" + instance.get(Calendar.MINUTE);
+        this.measuredDate = instance.get(Calendar.HOUR_OF_DAY) + ":" + (instance.get(Calendar.MINUTE) < 10 ? "0" + instance.get(Calendar.MINUTE) : instance.get(Calendar.MINUTE));
     }
 
     public String getMeasuredDate() {
@@ -40,7 +40,7 @@ public class DHT implements Serializable {
         this.humidity = humidity;
     }
 
-    public String toString(){
+    public String toString() {
         return measuredDate + ";" + temperature + ";" + humidity;
     }
 }
