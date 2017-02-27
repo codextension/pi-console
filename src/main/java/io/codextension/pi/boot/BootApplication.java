@@ -51,7 +51,7 @@ public class BootApplication {
                         writeToFile(value.toString());
                         System.out.println(value.getMeasuredDate() + " --> " + value.getTemperature() + " *C, " + value.getHumidity() + "%");
                     }
-                    Thread.sleep(Timer.ONE_SECOND * 5);
+                    Thread.sleep(Timer.ONE_MINUTE * 20);
                 }
             }
         };
