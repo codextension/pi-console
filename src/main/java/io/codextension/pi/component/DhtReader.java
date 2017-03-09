@@ -4,6 +4,9 @@ import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.GpioUtil;
+import io.codextension.pi.model.Dht;
+
+import java.util.Date;
 
 /**
  * Created by elie on 26.02.2017.
@@ -12,8 +15,19 @@ public class DhtReader {
     private static final int MAXTIMINGS = 85;
     private int[] dht11_dat = {0, 0, 0, 0, 0};
     private static final int PIN_NB = 4;
+    private static long lastCallTimestamp = 0;
 
-    public DHT getValue() {
+    public Dht getValue() {
+
+        if(true)
+            return new Dht(1,1);
+
+        if (lastCallTimestamp != 0 && (new Date().getTime() - lastCallTimestamp <= 2000)) {
+            return new Dht(99,99);
+        }
+
+        lastCallTimestamp = new Date().getTime();
+
         GpioController gpio = GpioFactory.getInstance();
         GpioUtil.export(PIN_NB, GpioUtil.DIRECTION_OUT);
 
@@ -70,7 +84,7 @@ public class DhtReader {
                 c = -c;
             }
 
-            return new DHT(c, h);
+            return new Dht(c, h);
         } else {
             return null;
         }
