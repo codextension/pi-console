@@ -1,6 +1,7 @@
 package io.codextension.pi.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Locale;
 /**
  * Created by elie on 09.03.17.
  */
+@Document(collection = "dht")
 public class Dht {
 
     @Id
