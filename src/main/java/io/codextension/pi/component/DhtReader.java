@@ -13,15 +13,11 @@ import java.util.Date;
  */
 public class DhtReader {
     private static final int MAXTIMINGS = 85;
-    private int[] dht11_dat = {0, 0, 0, 0, 0};
     private static final int PIN_NB = 4;
     private static long lastCallTimestamp = 0;
+    private int[] dht11_dat = {0, 0, 0, 0, 0};
 
     public Dht getValue() {
-
-        if(true)
-            return new Dht(1,1);
-
         if (lastCallTimestamp != 0 && (new Date().getTime() - lastCallTimestamp <= 2000)) {
             return new Dht(99,99);
         }
