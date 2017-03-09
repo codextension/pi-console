@@ -13,5 +13,5 @@ import java.util.List;
 @Repository
 public interface DhtRepository extends MongoRepository<Dht, String> {
 
-    List<Dht> findByMeasuredDateBetween(Date from, Date to);
+    List<Dht> findByMeasuredDateBetweenOrderByMeasuredDateDesc(Date from, Date to);
 }
