@@ -23,12 +23,11 @@ public class TemperaturePoller {
         reader = new DhtReader();
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 900000)
     public void pollTemperatureAndHumidity() {
             Dht value = reader.getValue();
             if (value != null) {
                 dhtRepository.save(value);
-                System.out.println(value.getMeasuredDate() + " --> " + value.getTemperature() + " *C, " + value.getHumidity() + "%");
             }
 
     }
