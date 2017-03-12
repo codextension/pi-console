@@ -6,10 +6,7 @@ import io.codextension.pi.repository.DhtRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,6 +17,7 @@ import java.util.List;
  * Created by elie on 26.02.2017.
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/temperature")
 public class TemperatureController {
 
