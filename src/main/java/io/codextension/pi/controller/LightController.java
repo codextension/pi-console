@@ -2,15 +2,13 @@ package io.codextension.pi.controller;
 
 import com.pi4j.io.gpio.*;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by eelkhour on 24.02.2017.
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/lights")
 public class LightController {
 

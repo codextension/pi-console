@@ -19,7 +19,7 @@ public class DhtReader {
 
     public Dht getValue() {
         if (lastCallTimestamp != 0 && (new Date().getTime() - lastCallTimestamp <= 2000)) {
-            return new Dht(99,99);
+            return null;
         }
 
         lastCallTimestamp = new Date().getTime();

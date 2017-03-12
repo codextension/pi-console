@@ -33,13 +33,12 @@ public class TemperatureController {
 
     @RequestMapping("/current")
     public Dht getCurrent() {
-        dhtRepository.findAll();
-            DhtReader reader = new DhtReader();
-            return reader.getValue();
+        DhtReader reader = new DhtReader();
+        return reader.getValue();
     }
 
     @RequestMapping("/range") // ?from=15.09.2012-10:12&to=15.09.2017-10:12
-    public List<Dht> getRange(@RequestParam(name = "from", required = true)  Date fromDate, @RequestParam(name = "to", required = true) Date toDate) {
+    public List<Dht> getRange(@RequestParam(name = "from", required = true) Date fromDate, @RequestParam(name = "to", required = true) Date toDate) {
         return dhtRepository.findByMeasuredDateBetweenOrderByMeasuredDateDesc(fromDate, toDate);
     }
 
