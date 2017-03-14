@@ -1,6 +1,7 @@
 package io.codextension.pi.controller;
 
 import com.pi4j.io.gpio.*;
+import com.pi4j.wiringpi.Gpio;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,11 +22,11 @@ public class DustSensorController {
         GpioPinDigitalOutput output = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_12);
 
         output.low();
-        Thread.sleep(2);
+        Gpio.delay(280);
         double inValue = input.getValue();
-        Thread.sleep(1);
+        Gpio.delay(40);
         output.high();
-        Thread.sleep(10);
+        Gpio.delay(9680);
         double density = (inValue * (3.3 / 1024)) * 0.17 - 0.1;
         return density;
 
