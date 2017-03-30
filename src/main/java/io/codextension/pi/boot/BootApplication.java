@@ -1,5 +1,7 @@
 package io.codextension.pi.boot;
 
+import io.codextension.pi.component.ADCReader;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,8 +15,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableMongoRepositories(basePackages = {"io.codextension.pi.model", "io.codextension.pi.repository"})
 @EnableScheduling
 @ComponentScan(basePackages = "io.codextension.pi")
-public class BootApplication {
+public class BootApplication implements CommandLineRunner {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(BootApplication.class, args);
+    }
+
+    @Override
+    public void run(String... strings) throws Exception {
+        ADCReader.monitor();
     }
 }
