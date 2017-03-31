@@ -9,6 +9,7 @@ import com.pi4j.io.gpio.GpioPinAnalogInput;
 import com.pi4j.io.gpio.event.GpioPinAnalogValueChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerAnalog;
 import com.pi4j.io.spi.SpiChannel;
+import com.pi4j.io.spi.SpiDevice;
 
 /**
  * Created by elie on 30.03.17.
@@ -16,14 +17,27 @@ import com.pi4j.io.spi.SpiChannel;
 public class ADCReader {
     public static void monitor(GpioController gpio) throws Exception {
 
-        System.out.println("<--Pi4J--> MCP3008 ADC Example ... started.");
-
-        // Create gpio controller
-
+        System.out.println("<--Pi4J--> MCP3008 ADC Example (NON-MONITORED) ... started.");
 
         // Create custom MCP3008 analog gpio provider
         // we must specify which chip select (CS) that that ADC chip is physically connected to.
-        final AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0);
+        final AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0,
+                SpiDevice.DEFAULT_SPI_SPEED,
+                SpiDevice.DEFAULT_SPI_MODE,
+                false);   // <<-- the 'false' value here disable the base background monitoring thread
+
+        // So why would I want to disable the background monitoring thread?
+        // Well, that depends on how you plan on integrating this into your project.
+        // If you need/want pin event notification, then you must keep the background
+        // monitoring thread enabled.  If you only need to periodically obtain analog
+        // input conversion values or only need to acquire the value as the result of
+        // some other event or condition in your application, then you can disable the
+        // background monitoring thread to reduce the runtime overhead.
+        // If its disabled, then anytime you request the pin.getValue() to get an analog
+        // conversion value it will get the value directly from the ADC chip synchronously
+        // in your process call.  If background monitoring is enabled, then calls to
+        // pin.getValue() return you the last acquired (cached) value and does not
+        // perform an immediate data acquisition.
 
         // Provision gpio analog input pins for all channels of the MCP3008.
         // (you don't have to define them all if you only use a subset in your project)
@@ -38,51 +52,21 @@ public class ADCReader {
                 gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH7, "MyAnalogInput-CH7")
         };
 
-
-        // Define the amount that the ADC input conversion value must change before
-        // a 'GpioPinAnalogValueChangeEvent' is raised.  This is used to prevent unnecessary
-        // event dispatching for an analog input that may have an acceptable or expected
-        // range of value drift.
-        provider.setEventThreshold(100, inputs); // all inputs; alternatively you can set thresholds on each input discretely
-
-        // Set the background monitoring interval timer for the underlying framework to
-        // interrogate the ADC chip for input conversion values.  The acceptable monitoring
-        // interval will be highly dependant on your specific project.  The lower this value
-        // is set, the more CPU time will be spend collecting analog input conversion values
-        // on a regular basis.  The higher this value the slower your application will get
-        // analog input value change events/notifications.  Try to find a reasonable balance
-        // for your project needs.
-        provider.setMonitorInterval(250); // milliseconds
-
-        // Print current analog input conversion values from each input channel
-        for (GpioPinAnalogInput input : inputs) {
-            System.out.println("<INITIAL VALUE> [" + input.getName() + "] : RAW VALUE = " + input.getValue());
-        }
-
-        // Create an analog pin value change listener
-        GpioPinListenerAnalog listener = new GpioPinListenerAnalog() {
-            @Override
-            public void handleGpioPinAnalogValueChangeEvent(GpioPinAnalogValueChangeEvent event) {
-                // get RAW value
-                double value = event.getValue();
-
-                // display output
-                System.out.println("<CHANGED VALUE> [" + event.getPin().getName() + "] : RAW VALUE = " + value);
-            }
-        };
-
-        // Register the gpio analog input listener for all input pins
-        gpio.addListener(listener, inputs);
-
         // Keep this sample program running for 10 minutes
         for (int count = 0; count < 600; count++) {
+            StringBuilder sb = new StringBuilder();
+
+            // Print current analog input conversion values from each input channel
+            for (GpioPinAnalogInput input : inputs) {
+                sb.append(" \t[" + input.getValue() + "] ");
+            }
+
+            // Print out all analog input conversion values
+            System.out.println("<MCP3008 VALUES> " + sb.toString());
+
             Thread.sleep(1000);
         }
 
-        // When your program is finished, make sure to stop all GPIO activity/threads by shutting
-        // down the GPIO controller (this method will forcefully shutdown all GPIO monitoring threads
-        // and background scheduled tasks)
-
-        System.out.println("Exiting MCP3008GpioExample");
+        System.out.println("Exiting MCP3008GpioExampleNonMonitored");
     }
 }
