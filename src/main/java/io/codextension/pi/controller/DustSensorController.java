@@ -1,5 +1,8 @@
 package io.codextension.pi.controller;
 
+import com.pi4j.gpio.extension.base.AdcGpioProvider;
+import com.pi4j.gpio.extension.mcp.MCP3008GpioProvider;
+import com.pi4j.gpio.extension.mcp.MCP3008Pin;
 import com.pi4j.io.gpio.*;
 import com.pi4j.io.spi.SpiChannel;
 import com.pi4j.io.spi.SpiDevice;
@@ -24,18 +27,20 @@ public class DustSensorController {
     @RequestMapping("/current")
     public double getCurrent() throws InterruptedException, IOException {
         GpioController gpio = GpioFactory.getInstance();
-        GpioPinAnalogInput input = gpio.provisionAnalogInputPin(RaspiPin.GPIO_16);
-        GpioPinDigitalOutput output = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_12);
-        SpiDevice spi = SpiFactory.getInstance(SpiChannel.CS0);
+        final AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0,
+                SpiDevice.DEFAULT_SPI_SPEED,
+                SpiDevice.DEFAULT_SPI_MODE,
+                false);
+        GpioPinAnalogInput input = gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH0, "MyAnalogInput-CH0");
+        GpioPinDigitalOutput led = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_12);
 
-        output.low();
+        led.low();
         Gpio.delay(280);
         double inValue = input.getValue();
         Gpio.delay(40);
-        output.high();
+        led.high();
         Gpio.delay(9680);
-        double density = (inValue * (3.3 / 1024)) * 0.17 - 0.1;
-        return density;
+        return (inValue * (3.3 / 1024)) * 0.17 - 0.1;
 
     }
 }
