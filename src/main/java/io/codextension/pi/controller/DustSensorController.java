@@ -40,6 +40,9 @@ public class DustSensorController {
         Gpio.delay(40);
         led.high();
         Gpio.delay(9680);
+        gpio.unprovisionPin(led);
+        gpio.unprovisionPin(input);
+        gpio.shutdown();
         return (inValue * (3.3 / 1024)) * 0.17 - 0.1;
 
     }
