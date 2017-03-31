@@ -14,12 +14,12 @@ import com.pi4j.io.spi.SpiChannel;
  * Created by elie on 30.03.17.
  */
 public class ADCReader {
-    public static void monitor() throws Exception {
+    public static void monitor(GpioController gpio) throws Exception {
 
         System.out.println("<--Pi4J--> MCP3008 ADC Example ... started.");
 
         // Create gpio controller
-        final GpioController gpio = GpioFactory.getInstance();
+
 
         // Create custom MCP3008 analog gpio provider
         // we must specify which chip select (CS) that that ADC chip is physically connected to.
@@ -82,7 +82,6 @@ public class ADCReader {
         // When your program is finished, make sure to stop all GPIO activity/threads by shutting
         // down the GPIO controller (this method will forcefully shutdown all GPIO monitoring threads
         // and background scheduled tasks)
-        gpio.shutdown();
 
         System.out.println("Exiting MCP3008GpioExample");
     }

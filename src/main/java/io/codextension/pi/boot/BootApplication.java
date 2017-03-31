@@ -1,5 +1,7 @@
 package io.codextension.pi.boot;
 
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioFactory;
 import io.codextension.pi.component.ADCReader;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -22,6 +24,8 @@ public class BootApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        ADCReader.monitor();
+        final GpioController gpio = GpioFactory.getInstance();
+        ADCReader.monitor(gpio);
+        gpio.shutdown();
     }
 }
