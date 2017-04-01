@@ -53,7 +53,7 @@ public class ADCReader {
         };
 
         // Keep this sample program running for 10 minutes
-        for (int count = 0; count < 600; count++) {
+        for (int count = 0; count < 100; count++) {
             StringBuilder sb = new StringBuilder();
 
             // Print current analog input conversion values from each input channel

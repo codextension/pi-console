@@ -31,19 +31,19 @@ public class DustSensorController {
                 SpiDevice.DEFAULT_SPI_SPEED,
                 SpiDevice.DEFAULT_SPI_MODE,
                 false);
-        GpioPinAnalogInput input = gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH0, "MyAnalogInput-CH0");
+        GpioPinAnalogInput input = gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH0);
         GpioPinDigitalOutput led = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_12);
 
-        led.low();
+        led.high();
         Gpio.delay(280);
         double inValue = input.getValue();
         Gpio.delay(40);
-        led.high();
+        led.low();
         Gpio.delay(9680);
         gpio.unprovisionPin(led);
         gpio.unprovisionPin(input);
         gpio.shutdown();
-        return (inValue * (3.3 / 1024)) * 0.17 - 0.1;
+        return (inValue * (5 / 1024)) * 0.17 - 0.1;
 
     }
 }
