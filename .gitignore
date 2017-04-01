@@ -22,3 +22,4 @@ rebel.xml
 */target/**
 *.log
 typings/**
+.settings/**
