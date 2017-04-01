@@ -35,12 +35,12 @@ public class DustSensorController {
         Gpio.digitalWrite(12, Gpio.HIGH);
         Gpio.delay(280);
         double inValue = provider.getValue(MCP3008Pin.CH0);
+        Gpio.analogRead(MCP3008Pin.CH0.getAddress());
         Gpio.delay(1000);
         Gpio.digitalWrite(12, Gpio.LOW);
 
         GpioUtil.unexport(12);
         provider.unexport(MCP3008Pin.CH0);
-
         return (inValue * (5 / 1024)) * 0.17 - 0.1;
 
     }
