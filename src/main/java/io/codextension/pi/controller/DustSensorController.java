@@ -4,6 +4,7 @@ import com.pi4j.gpio.extension.base.AdcGpioProvider;
 import com.pi4j.gpio.extension.mcp.MCP3008GpioProvider;
 import com.pi4j.gpio.extension.mcp.MCP3008Pin;
 import com.pi4j.io.gpio.*;
+import com.pi4j.io.gpio.impl.GpioControllerImpl;
 import com.pi4j.io.spi.SpiChannel;
 import com.pi4j.io.spi.SpiDevice;
 import com.pi4j.io.spi.SpiFactory;
@@ -28,18 +29,20 @@ public class DustSensorController {
     public double getCurrent() throws InterruptedException, IOException {
 
         AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0, SpiDevice.DEFAULT_SPI_SPEED, SpiDevice.DEFAULT_SPI_MODE, false);
+        GpioController analogGpio = new GpioControllerImpl(provider);
 
         GpioUtil.export(22, GpioUtil.DIRECTION_OUT);
         Gpio.pinMode(22, Gpio.OUTPUT);
-        provider.export(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
-        provider.setMode(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
+        GpioPinAnalogInput analogPin = analogGpio.provisionAnalogInputPin(provider, MCP3008Pin.CH0);
+        //provider.export(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
+        //provider.setMode(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
         GpioUtil.export(12, GpioUtil.DIRECTION_OUT);
         Gpio.pinMode(12, Gpio.OUTPUT);
 
         Gpio.digitalWrite(22, Gpio.HIGH);
         Gpio.digitalWrite(12, Gpio.HIGH);
         Gpio.delay(280);
-        double inValue = provider.getValue(MCP3008Pin.CH0);
+        double inValue = analogPin.getValue(); //provider.getValue(MCP3008Pin.CH0);
         Gpio.delay(40);
         Gpio.digitalWrite(12, Gpio.LOW);
         Gpio.delay(1000);
@@ -47,7 +50,9 @@ public class DustSensorController {
 
         GpioUtil.unexport(22);
         GpioUtil.unexport(12);
-        provider.unexport(MCP3008Pin.CH0);
+        //provider.unexport(MCP3008Pin.CH0);
+        analogPin.unexport();
+        analogGpio.shutdown();
 
         return (inValue * (3.3 / 1024)) * 0.17 - 0.1;
 

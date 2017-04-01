@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class DhtReader {
     private static final int MAXTIMINGS = 85;
-    private static final int PIN_NB = 4;
+    private static final int PIN_NB = 23;
     private static long lastCallTimestamp = 0;
     private int[] dht11_dat = {0, 0, 0, 0, 0};
 
