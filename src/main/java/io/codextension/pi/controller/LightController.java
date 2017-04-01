@@ -1,6 +1,8 @@
 package io.codextension.pi.controller;
 
 import com.pi4j.io.gpio.*;
+import com.pi4j.wiringpi.Gpio;
+import com.pi4j.wiringpi.GpioUtil;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +17,8 @@ public class LightController {
     @RequestMapping(value = "/{state}", method = RequestMethod.GET)
     public String switchLights(@PathVariable(required = true, name = "state") String state, Model model) {
         GpioController gpio = GpioFactory.getInstance();
-        GpioPinDigitalOutput myLed_1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "My LED 1");
+
+        GpioPinDigitalOutput myLed_1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "My LED 1");
         GpioPinDigitalOutput myLed_2 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "My LED 2");
 
         if (state.equalsIgnoreCase("off")) {

@@ -1,5 +1,6 @@
 package io.codextension.pi.boot;
 
+import com.pi4j.wiringpi.Gpio;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,6 +22,6 @@ public class BootApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-
+        Gpio.wiringPiSetupGpio();
     }
 }

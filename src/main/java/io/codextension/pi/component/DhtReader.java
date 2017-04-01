@@ -24,7 +24,6 @@ public class DhtReader {
 
         lastCallTimestamp = new Date().getTime();
 
-        GpioController gpio = GpioFactory.getInstance();
         GpioUtil.export(PIN_NB, GpioUtil.DIRECTION_OUT);
 
         int laststate = Gpio.HIGH;
@@ -64,7 +63,9 @@ public class DhtReader {
                 j++;
             }
         }
-        gpio.shutdown();
+
+        GpioUtil.unexport(PIN_NB);
+
         // check we read 40 bits (8bit x 5 ) + verify checksum in the last
         // byte
         if ((j >= 40) && checkParity()) {

@@ -26,24 +26,30 @@ public class DustSensorController {
 
     @RequestMapping("/current")
     public double getCurrent() throws InterruptedException, IOException {
-        GpioController gpio = GpioFactory.getInstance();
-        final AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0,
-                SpiDevice.DEFAULT_SPI_SPEED,
-                SpiDevice.DEFAULT_SPI_MODE,
-                false);
-        GpioPinAnalogInput input = gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH0);
-        GpioPinDigitalOutput led = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_12);
 
-        led.high();
+        AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0, SpiDevice.DEFAULT_SPI_SPEED, SpiDevice.DEFAULT_SPI_MODE, false);
+
+        GpioUtil.export(22, GpioUtil.DIRECTION_OUT);
+        Gpio.pinMode(22, Gpio.OUTPUT);
+        provider.export(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
+        provider.setMode(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
+        GpioUtil.export(12, GpioUtil.DIRECTION_OUT);
+        Gpio.pinMode(12, Gpio.OUTPUT);
+
+        Gpio.digitalWrite(22, Gpio.HIGH);
+        Gpio.digitalWrite(12, Gpio.HIGH);
         Gpio.delay(280);
-        double inValue = input.getValue();
+        double inValue = provider.getValue(MCP3008Pin.CH0);
         Gpio.delay(40);
-        led.low();
-        Gpio.delay(9680);
-        gpio.unprovisionPin(led);
-        gpio.unprovisionPin(input);
-        gpio.shutdown();
-        return (inValue * (5 / 1024)) * 0.17 - 0.1;
+        Gpio.digitalWrite(12, Gpio.LOW);
+        Gpio.delay(1000);
+        Gpio.digitalWrite(22, Gpio.LOW);
+
+        GpioUtil.unexport(22);
+        GpioUtil.unexport(12);
+        provider.unexport(MCP3008Pin.CH0);
+
+        return (inValue * (3.3 / 1024)) * 0.17 - 0.1;
 
     }
 }
