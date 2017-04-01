@@ -3,16 +3,13 @@ package io.codextension.pi.controller;
 import com.pi4j.gpio.extension.base.AdcGpioProvider;
 import com.pi4j.gpio.extension.mcp.MCP3008GpioProvider;
 import com.pi4j.gpio.extension.mcp.MCP3008Pin;
-import com.pi4j.io.gpio.*;
-import com.pi4j.io.gpio.impl.GpioControllerImpl;
+import com.pi4j.io.gpio.PinMode;
 import com.pi4j.io.spi.SpiChannel;
 import com.pi4j.io.spi.SpiDevice;
-import com.pi4j.io.spi.SpiFactory;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.GpioUtil;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -29,32 +26,22 @@ public class DustSensorController {
     public double getCurrent() throws InterruptedException, IOException {
 
         AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0, SpiDevice.DEFAULT_SPI_SPEED, SpiDevice.DEFAULT_SPI_MODE, false);
-        GpioController analogGpio = new GpioControllerImpl(provider);
 
-        GpioUtil.export(22, GpioUtil.DIRECTION_OUT);
-        Gpio.pinMode(22, Gpio.OUTPUT);
-        GpioPinAnalogInput analogPin = analogGpio.provisionAnalogInputPin(provider, MCP3008Pin.CH0);
-        //provider.export(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
-        //provider.setMode(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
+        provider.export(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
+        Gpio.pinMode(MCP3008Pin.CH0.getAddress(), PinMode.ANALOG_INPUT.getValue());
         GpioUtil.export(12, GpioUtil.DIRECTION_OUT);
         Gpio.pinMode(12, Gpio.OUTPUT);
 
-        Gpio.digitalWrite(22, Gpio.HIGH);
         Gpio.digitalWrite(12, Gpio.HIGH);
         Gpio.delay(280);
-        double inValue = analogPin.getValue(); //provider.getValue(MCP3008Pin.CH0);
-        Gpio.delay(40);
-        Gpio.digitalWrite(12, Gpio.LOW);
+        double inValue = provider.getValue(MCP3008Pin.CH0);
         Gpio.delay(1000);
-        Gpio.digitalWrite(22, Gpio.LOW);
+        Gpio.digitalWrite(12, Gpio.LOW);
 
-        GpioUtil.unexport(22);
         GpioUtil.unexport(12);
-        //provider.unexport(MCP3008Pin.CH0);
-        analogPin.unexport();
-        analogGpio.shutdown();
+        provider.unexport(MCP3008Pin.CH0);
 
-        return (inValue * (3.3 / 1024)) * 0.17 - 0.1;
+        return (inValue * (5 / 1024)) * 0.17 - 0.1;
 
     }
 }
