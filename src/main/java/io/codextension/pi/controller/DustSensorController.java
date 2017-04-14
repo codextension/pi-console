@@ -28,7 +28,7 @@ public class DustSensorController {
         AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0, SpiDevice.DEFAULT_SPI_SPEED, SpiDevice.DEFAULT_SPI_MODE, false);
 
         provider.export(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
-        GpioUtil.export(12, GpioUtil.DIRECTION_OUT);
+        Gpio.pinMode(12, Gpio.OUTPUT);
 
         Gpio.digitalWrite(12, Gpio.LOW);
         Gpio.delayMicroseconds(280);
