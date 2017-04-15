@@ -38,7 +38,7 @@ public class DustSensorController {
 
         GpioUtil.unexport(12);
         provider.unexport(MCP3008Pin.CH0);
-        return ((inValue * (5.0 / 1024)) * 0.17 - 0.1) * 1000;
+        return ((inValue * (5.0 / 1024)) * 6 - 0.1) * 1000;
 
     }
 }
