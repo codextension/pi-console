@@ -36,13 +36,15 @@ public class DustSensorController {
         Gpio.digitalWrite(12, Gpio.LOW);
         Gpio.delayMicroseconds(280);
         double inValue = provider.getImmediateValue(MCP3008Pin.CH0);
+        double voltage = ((inValue * 3.3) / 1024.0);
+        double dustDensity = voltage * 0.17 - 0.1;
         Gpio.delayMicroseconds(40);
         Gpio.digitalWrite(12, Gpio.HIGH);
 
         GpioUtil.unexport(12);
         provider.unexport(MCP3008Pin.CH0);
-        LOG.debug("Raw value read is " + inValue + ", Voltage: " + ((inValue * 3.3) / 1024.0));
-        return ((inValue * 3.3) / 1024.0) * 0.17 - 0.1;
+        LOG.debug("Raw value read is " + inValue + ", voltage: " + voltage + ", dust density: " + dustDensity);
+        return dustDensity;
 
     }
 }
