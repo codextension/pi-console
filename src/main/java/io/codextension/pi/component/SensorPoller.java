@@ -53,7 +53,7 @@ public class SensorPoller {
             if (value != null && value.getDensity() > 0 && Math.abs(latestValueMeasured - value.getValueMeasured()) > 99) {
                 latestValueMeasured = value.getValueMeasured();
                 dustSensorRepository.save(value);
-                LOG.debug("Saving new temp/humidity data: " + value.getDensity() + " µg/m3");
+                LOG.debug("Saving new dust density data: " + value.getDensity() + " µg/m3");
             }
         } catch (IOException e) {
             // ingore for now
