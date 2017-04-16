@@ -32,7 +32,7 @@ public class DhtSensorPoller {
         dhtReader = new DhtReader();
     }
 
-    @Scheduled(fixedRate = 600000)
+    @Scheduled(fixedRate = 10000)
     public void pollTemperatureAndHumidity() {
         LOG.debug("Attempting to read temp and humidity...");
         Dht value = dhtReader.getValue();
