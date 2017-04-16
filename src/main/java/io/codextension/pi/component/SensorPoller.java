@@ -19,6 +19,7 @@ import java.io.IOException;
 public class SensorPoller {
     private DhtReader dhtReader;
     private DustSensorReader dustSensorReader;
+    private double latestValueMeasured;
 
     @Autowired
     private DhtRepository dhtRepository;
@@ -40,12 +41,13 @@ public class SensorPoller {
             }
     }
 
-    @Scheduled(fixedRate = 15000)
+    @Scheduled(fixedRate = 5000)
     public void pollDustDensity() {
         Dust value = null;
         try {
             value = dustSensorReader.getValue();
-            if (value != null && value.getDensity() > 0) {
+            if (value != null && value.getDensity() > 0 && Math.abs(latestValueMeasured - value.getValueMeasured()) > 99) {
+                latestValueMeasured = value.getValueMeasured();
                 dustSensorRepository.save(value);
             }
         } catch (IOException e) {
