@@ -84,7 +84,7 @@ public class DhtReader {
             lastValue = new Dht(c, h);
             return lastValue;
         } else {
-            return null;
+            return lastValue;
         }
 
     }
