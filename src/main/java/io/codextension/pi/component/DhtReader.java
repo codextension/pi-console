@@ -15,11 +15,12 @@ public class DhtReader {
     private static final int MAXTIMINGS = 85;
     private static final int PIN_NB = 23;
     private static long lastCallTimestamp = 0;
+    private static Dht lastValue;
     private int[] dht11_dat = {0, 0, 0, 0, 0};
 
     public Dht getValue() {
         if (lastCallTimestamp != 0 && (new Date().getTime() - lastCallTimestamp <= 2000)) {
-            return null;
+            return lastValue;
         }
 
         lastCallTimestamp = new Date().getTime();
@@ -80,8 +81,8 @@ public class DhtReader {
             if ((dht11_dat[2] & 0x80) != 0) {
                 c = -c;
             }
-
-            return new Dht(c, h);
+            lastValue = new Dht(c, h);
+            return lastValue;
         } else {
             return null;
         }
