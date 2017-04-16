@@ -8,6 +8,8 @@ import com.pi4j.io.spi.SpiChannel;
 import com.pi4j.io.spi.SpiDevice;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.GpioUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +23,7 @@ import java.io.IOException;
 @RequestMapping("/dust")
 @CrossOrigin
 public class DustSensorController {
+    private static final Logger LOG = LoggerFactory.getLogger(DustSensorController.class);
 
     @RequestMapping("/current")
     public double getCurrent() throws InterruptedException, IOException {
@@ -38,6 +41,7 @@ public class DustSensorController {
 
         GpioUtil.unexport(12);
         provider.unexport(MCP3008Pin.CH0);
+        LOG.debug("Raw value read is " + inValue);
         return (inValue * 3.3) / 1024.0;
 
     }
