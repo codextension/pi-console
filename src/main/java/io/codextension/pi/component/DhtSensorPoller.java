@@ -32,13 +32,20 @@ public class DhtSensorPoller {
         dhtReader = new DhtReader();
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 600000)
     public void pollTemperatureAndHumidity() {
         LOG.debug("Attempting to read temp and humidity...");
         Dht value = dhtReader.getValue();
             if (value != null) {
                 dhtRepository.save(value);
                 LOG.debug("Saving new temp/humidity data: " + value.getHumidity() + "% , " + value.getTemperature() + " °C");
+            } else {
+                try {
+                    Thread.sleep(2000);
+                    pollTemperatureAndHumidity();
+                } catch (InterruptedException e) {
+                    LOG.error(e.getMessage());
+                }
             }
     }
 }
