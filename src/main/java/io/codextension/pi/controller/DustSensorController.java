@@ -44,9 +44,9 @@ public class DustSensorController {
     }
 
     @RequestMapping("/current")
-    public double getCurrent() throws InterruptedException, IOException {
+    public Dust getCurrent() throws InterruptedException, IOException {
         DustSensorReader dustSensorReader = new DustSensorReader();
-        return dustSensorReader.getValue().getDensity();
+        return dustSensorReader.getValue();
     }
 
     @RequestMapping("/range") // ?from=15.09.2012-10:12&to=15.09.2017-10:12
