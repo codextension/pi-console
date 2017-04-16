@@ -40,7 +40,7 @@ public class SensorPoller {
             }
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 15000)
     public void pollDustDensity() {
         Dust value = null;
         try {
