@@ -25,20 +25,20 @@ public class DustSensorController {
     @RequestMapping("/current")
     public double getCurrent() throws InterruptedException, IOException {
 
-        AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0, SpiDevice.DEFAULT_SPI_SPEED, SpiDevice.DEFAULT_SPI_MODE, false);
+        MCP3008GpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0, SpiDevice.DEFAULT_SPI_SPEED, SpiDevice.DEFAULT_SPI_MODE, false);
 
         provider.export(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
         Gpio.pinMode(12, Gpio.OUTPUT);
 
         Gpio.digitalWrite(12, Gpio.LOW);
         Gpio.delayMicroseconds(280);
-        double inValue = provider.getValue(MCP3008Pin.CH0);
+        double inValue = provider.getImmediateValue(MCP3008Pin.CH0);
         Gpio.delayMicroseconds(40);
         Gpio.digitalWrite(12, Gpio.HIGH);
 
         GpioUtil.unexport(12);
         provider.unexport(MCP3008Pin.CH0);
-        return ((inValue * (5.0 / 1024)) * 6 - 0.1) * 1000;
+        return (inValue * 3.3) / 1024.0;
 
     }
 }
