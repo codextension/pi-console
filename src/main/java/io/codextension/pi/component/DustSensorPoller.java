@@ -1,6 +1,5 @@
 package io.codextension.pi.component;
 
-import io.codextension.pi.controller.DustSensorController;
 import io.codextension.pi.model.Dht;
 import io.codextension.pi.model.Dust;
 import io.codextension.pi.repository.DhtRepository;
@@ -18,31 +17,17 @@ import java.io.IOException;
  * Created by elie on 09.03.17.
  */
 @Component
-public class SensorPoller {
-    private static final Logger LOG = LoggerFactory.getLogger(SensorPoller.class);
-    private DhtReader dhtReader;
+public class DustSensorPoller {
+    private static final Logger LOG = LoggerFactory.getLogger(DustSensorPoller.class);
     private DustSensorReader dustSensorReader;
     private double latestValueMeasured;
-
-    @Autowired
-    private DhtRepository dhtRepository;
 
     @Autowired
     private DustSensorRepository dustSensorRepository;
 
     @PostConstruct
-    public void init(){
-        dhtReader = new DhtReader();
+    public void init() {
         dustSensorReader = new DustSensorReader();
-    }
-
-    @Scheduled(fixedRate = 900000)
-    public void pollTemperatureAndHumidity() {
-        Dht value = dhtReader.getValue();
-            if (value != null) {
-                dhtRepository.save(value);
-                LOG.debug("Saving new temp/humidity data: " + value.getHumidity() + "% , " + value.getTemperature() + " °C");
-            }
     }
 
     @Scheduled(fixedRate = 1000)
