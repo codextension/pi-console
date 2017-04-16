@@ -5,6 +5,8 @@ import io.codextension.pi.model.Dht;
 import io.codextension.pi.model.Dust;
 import io.codextension.pi.repository.DhtRepository;
 import io.codextension.pi.repository.DustSensorRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,7 @@ import java.io.IOException;
  */
 @Component
 public class SensorPoller {
+    private static final Logger LOG = LoggerFactory.getLogger(SensorPoller.class);
     private DhtReader dhtReader;
     private DustSensorReader dustSensorReader;
     private double latestValueMeasured;
@@ -38,6 +41,7 @@ public class SensorPoller {
         Dht value = dhtReader.getValue();
             if (value != null) {
                 dhtRepository.save(value);
+                LOG.debug("Saving new temp/humidity data: " + value.getHumidity() + "% , " + value.getTemperature() + " °C");
             }
     }
 
@@ -49,6 +53,7 @@ public class SensorPoller {
             if (value != null && value.getDensity() > 0 && Math.abs(latestValueMeasured - value.getValueMeasured()) > 99) {
                 latestValueMeasured = value.getValueMeasured();
                 dustSensorRepository.save(value);
+                LOG.debug("Saving new temp/humidity data: " + value.getDensity() + " µg/m3");
             }
         } catch (IOException e) {
             // ingore for now
