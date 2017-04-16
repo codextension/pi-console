@@ -41,8 +41,8 @@ public class DustSensorController {
 
         GpioUtil.unexport(12);
         provider.unexport(MCP3008Pin.CH0);
-        LOG.debug("Raw value read is " + inValue);
-        return (inValue * 3.3) / 1024.0;
+        LOG.debug("Raw value read is " + inValue + ", Voltage: " + ((inValue * 3.3) / 1024.0));
+        return ((inValue * 3.3) / 1024.0) * 0.17 - 0.1;
 
     }
 }
