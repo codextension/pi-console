@@ -22,6 +22,9 @@ import java.util.List;
 public class TemperatureController {
 
     @Autowired
+    private DhtReader reader;
+
+    @Autowired
     private DhtRepository dhtRepository;
 
     @InitBinder
@@ -33,7 +36,6 @@ public class TemperatureController {
 
     @RequestMapping("/current")
     public Dht getCurrent() {
-        DhtReader reader = new DhtReader();
         return reader.getValue();
     }
 

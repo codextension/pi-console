@@ -36,6 +36,9 @@ public class DustSensorController {
     @Autowired
     private DustSensorRepository dustSensorRepository;
 
+    @Autowired
+    private DustSensorReader dustSensorReader;
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy-hh:mm");
@@ -45,7 +48,6 @@ public class DustSensorController {
 
     @RequestMapping("/current")
     public Dust getCurrent() throws InterruptedException, IOException {
-        DustSensorReader dustSensorReader = new DustSensorReader();
         return dustSensorReader.getValue();
     }
 
