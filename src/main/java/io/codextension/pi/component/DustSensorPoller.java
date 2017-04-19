@@ -19,6 +19,7 @@ import java.io.IOException;
 @Component
 public class DustSensorPoller {
     private static final Logger LOG = LoggerFactory.getLogger(DustSensorPoller.class);
+    @Autowired
     private DustSensorReader dustSensorReader;
     private double latestValueMeasured;
 
@@ -27,7 +28,6 @@ public class DustSensorPoller {
 
     @PostConstruct
     public void init() {
-        dustSensorReader = new DustSensorReader();
     }
 
     @Scheduled(fixedRate = 1000)

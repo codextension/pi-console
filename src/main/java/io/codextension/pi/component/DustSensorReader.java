@@ -8,13 +8,38 @@ import com.pi4j.io.spi.SpiDevice;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.GpioUtil;
 import io.codextension.pi.model.Dust;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.IOException;
 
 /**
  * Created by elie on 16.04.17.
  */
+@Component
+@Scope("singleton")
 public class DustSensorReader {
+
+    private MCP3008GpioProvider provider;
+
+    @PostConstruct
+    public void init() {
+        try {
+            provider = new MCP3008GpioProvider(SpiChannel.CS0, SpiDevice.DEFAULT_SPI_SPEED, SpiDevice.DEFAULT_SPI_MODE, false);
+            provider.export(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
+            Gpio.pinMode(12, Gpio.OUTPUT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PreDestroy
+    public void destroy() {
+        GpioUtil.unexport(12);
+        provider.unexport(MCP3008Pin.CH0);
+    }
 
     /**
      * For info
@@ -29,10 +54,7 @@ public class DustSensorReader {
      * @throws IOException
      */
     public Dust getValue() throws IOException {
-        MCP3008GpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0, SpiDevice.DEFAULT_SPI_SPEED, SpiDevice.DEFAULT_SPI_MODE, false);
 
-        provider.export(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
-        Gpio.pinMode(12, Gpio.OUTPUT);
 
         Gpio.digitalWrite(12, Gpio.LOW);
         Gpio.delayMicroseconds(280);
@@ -42,8 +64,7 @@ public class DustSensorReader {
         Gpio.delayMicroseconds(40);
         Gpio.digitalWrite(12, Gpio.HIGH);
 
-        GpioUtil.unexport(12);
-        provider.unexport(MCP3008Pin.CH0);
+
         Dust dust = new Dust(inValue, voltage, dustDensity);
         return dust;
     }

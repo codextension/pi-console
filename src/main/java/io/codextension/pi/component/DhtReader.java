@@ -5,12 +5,19 @@ import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.GpioUtil;
 import io.codextension.pi.model.Dht;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.Date;
 
 /**
  * Created by elie on 26.02.2017.
  */
+@Component
+@Scope("singleton")
 public class DhtReader {
     private static final int MAXTIMINGS = 85;
     private static final int PIN_NB = 23;
@@ -18,14 +25,22 @@ public class DhtReader {
     private static Dht lastValue;
     private int[] dht11_dat = {0, 0, 0, 0, 0};
 
+    @PostConstruct
+    public void ini() {
+        GpioUtil.export(PIN_NB, GpioUtil.DIRECTION_OUT);
+    }
+
+    @PreDestroy
+    public void destroy() {
+        GpioUtil.unexport(PIN_NB);
+    }
+
     public Dht getValue() {
         if (lastCallTimestamp != 0 && (new Date().getTime() - lastCallTimestamp <= 2000)) {
             return lastValue;
         }
 
         lastCallTimestamp = new Date().getTime();
-
-        GpioUtil.export(PIN_NB, GpioUtil.DIRECTION_OUT);
 
         int laststate = Gpio.HIGH;
         int j = 0;
@@ -65,7 +80,6 @@ public class DhtReader {
             }
         }
 
-        GpioUtil.unexport(PIN_NB);
 
         // check we read 40 bits (8bit x 5 ) + verify checksum in the last
         // byte
@@ -86,7 +100,6 @@ public class DhtReader {
         } else {
             return lastValue;
         }
-
     }
 
     private boolean checkParity() {

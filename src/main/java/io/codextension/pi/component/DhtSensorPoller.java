@@ -19,6 +19,8 @@ import java.io.IOException;
 @Component
 public class DhtSensorPoller {
     private static final Logger LOG = LoggerFactory.getLogger(DhtSensorPoller.class);
+
+    @Autowired
     private DhtReader dhtReader;
 
     @Autowired
@@ -29,7 +31,6 @@ public class DhtSensorPoller {
 
     @PostConstruct
     public void init(){
-        dhtReader = new DhtReader();
     }
 
     @Scheduled(fixedRate = 600000)
