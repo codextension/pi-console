@@ -36,7 +36,7 @@ public class TemperatureController {
 
     @RequestMapping("/current")
     public Dht getCurrent() {
-        return reader.getValue();
+        return reader.getPreviousValue();
     }
 
     @RequestMapping("/range") // ?from=15.09.2012-10:12&to=15.09.2017-10:12

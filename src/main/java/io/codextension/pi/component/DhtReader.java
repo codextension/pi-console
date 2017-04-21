@@ -23,6 +23,7 @@ public class DhtReader {
     private static final int PIN_NB = 23;
     private static long lastCallTimestamp = 0;
     private int[] dht11_dat = {0, 0, 0, 0, 0};
+    private Dht previousValue;
 
     @PostConstruct
     public void ini() {
@@ -36,7 +37,7 @@ public class DhtReader {
 
     public synchronized Dht getValue() {
         if (lastCallTimestamp != 0 && (new Date().getTime() - lastCallTimestamp <= 2000)) {
-            return null;
+            return previousValue;
         }
 
         lastCallTimestamp = new Date().getTime();
@@ -94,14 +95,18 @@ public class DhtReader {
             if ((dht11_dat[2] & 0x80) != 0) {
                 c = -c;
             }
-            return new Dht(c, h);
-        } else {
-            return null;
+            previousValue = new Dht(c, h);
         }
+
+        return previousValue;
     }
 
     private boolean checkParity() {
         return (dht11_dat[4] == ((dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF));
+    }
+
+    public Dht getPreviousValue() {
+        return previousValue;
     }
 }
 

@@ -23,6 +23,7 @@ import java.io.IOException;
 public class DustSensorReader {
 
     private MCP3008GpioProvider provider;
+    private Dust previousValue;
 
     @PostConstruct
     public void init() {
@@ -65,7 +66,11 @@ public class DustSensorReader {
         Gpio.digitalWrite(12, Gpio.HIGH);
 
 
-        Dust dust = new Dust(inValue, voltage, dustDensity);
-        return dust;
+        previousValue = new Dust(inValue, voltage, dustDensity);
+        return previousValue;
+    }
+
+    public Dust getPreviousValue() {
+        return previousValue;
     }
 }
