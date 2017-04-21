@@ -26,9 +26,6 @@ public class DhtSensorPoller {
     @Autowired
     private DhtRepository dhtRepository;
 
-    @Autowired
-    private DustSensorRepository dustSensorRepository;
-
     @PostConstruct
     public void init(){
     }
@@ -39,7 +36,7 @@ public class DhtSensorPoller {
         Dht value = dhtReader.getValue();
             if (value != null) {
                 dhtRepository.save(value);
-                LOG.debug("Saving new temp/humidity data: " + value.getHumidity() + "% , " + value.getTemperature() + " °C");
+                LOG.debug("Saving new temp/humidity data [" + value.getId() + "] : " + value.getHumidity() + "% , " + value.getTemperature() + " °C");
             } else {
                 try {
                     Thread.sleep(2000);

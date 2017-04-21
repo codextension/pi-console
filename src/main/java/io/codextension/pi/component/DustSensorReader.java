@@ -53,7 +53,7 @@ public class DustSensorReader {
      * @return
      * @throws IOException
      */
-    public Dust getValue() throws IOException {
+    public synchronized Dust getValue() throws IOException {
 
 
         Gpio.digitalWrite(12, Gpio.LOW);

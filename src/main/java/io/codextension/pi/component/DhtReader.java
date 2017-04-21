@@ -22,7 +22,6 @@ public class DhtReader {
     private static final int MAXTIMINGS = 85;
     private static final int PIN_NB = 23;
     private static long lastCallTimestamp = 0;
-    private static Dht lastValue;
     private int[] dht11_dat = {0, 0, 0, 0, 0};
 
     @PostConstruct
@@ -35,9 +34,9 @@ public class DhtReader {
         GpioUtil.unexport(PIN_NB);
     }
 
-    public Dht getValue() {
+    public synchronized Dht getValue() {
         if (lastCallTimestamp != 0 && (new Date().getTime() - lastCallTimestamp <= 2000)) {
-            return lastValue;
+            return null;
         }
 
         lastCallTimestamp = new Date().getTime();
@@ -95,10 +94,9 @@ public class DhtReader {
             if ((dht11_dat[2] & 0x80) != 0) {
                 c = -c;
             }
-            lastValue = new Dht(c, h);
-            return lastValue;
+            return new Dht(c, h);
         } else {
-            return lastValue;
+            return null;
         }
     }
 
