@@ -1,18 +1,14 @@
 package io.codextension.pi.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "dust")
-public class Dust {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private long id;
+public class Dust extends AbstractPersistable<Long> {
 
     @Column(name = "value_measured")
     private double valueMeasured;
@@ -34,10 +30,6 @@ public class Dust {
         this.valueMeasured = valueMeasured;
         this.voltage = voltage;
         this.density = density;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public double getValueMeasured() {

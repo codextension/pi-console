@@ -1,18 +1,14 @@
 package io.codextension.pi.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "dht")
-public class Dht {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private long id;
+public class Dht extends AbstractPersistable<Long> {
 
     @Column(name = "temperature")
     private float temperature;
@@ -50,9 +46,5 @@ public class Dht {
 
     public Date getMeasuredDate() {
         return measuredDate;
-    }
-
-    public long getId() {
-        return id;
     }
 }
