@@ -21,7 +21,7 @@ import java.util.concurrent.Executor;
  * Created by eelkhour on 24.02.2017.
  */
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = {"io.codextension.pi.model", "io.codextension.pi.repository"})
+@EnableJpaRepositories(basePackages = {"io.codextension.pi.model"})
 @EnableScheduling
 @EnableAsync
 @ComponentScan(basePackages = "io.codextension.pi")
