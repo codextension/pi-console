@@ -3,13 +3,12 @@ package io.codextension.pi.boot;
 import com.pi4j.wiringpi.Gpio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -22,7 +21,7 @@ import java.util.concurrent.Executor;
  * Created by eelkhour on 24.02.2017.
  */
 @SpringBootApplication
-@EnableMongoRepositories(basePackages = {"io.codextension.pi.model", "io.codextension.pi.repository"})
+@EnableJpaRepositories(basePackages = {"io.codextension.pi.model", "io.codextension.pi.repository"})
 @EnableScheduling
 @EnableAsync
 @ComponentScan(basePackages = "io.codextension.pi")
