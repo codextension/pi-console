@@ -9,19 +9,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 import java.util.concurrent.Executor;
 
 /**
  * Created by eelkhour on 24.02.2017.
  */
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = {"io.codextension.pi.model", "io.codextension.pi.repository"})
+@EnableJpaRepositories(basePackages = {"io.codextension.pi.repository"})
 @EnableScheduling
 @EnableAsync
 @ComponentScan(basePackages = "io.codextension.pi")
@@ -41,6 +46,21 @@ public class BootApplication {
     @Bean
     public Executor taskExecutor() {
         return new SimpleAsyncTaskExecutor();
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+            DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
+        LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
+        bean.setDataSource(dataSource);
+        bean.setJpaVendorAdapter(jpaVendorAdapter);
+        bean.setPackagesToScan("io.codextension.pi.model");
+        return bean;
+    }
+
+    @Bean
+    public JpaTransactionManager transactionManager(EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
     }
 
     @PostConstruct
