@@ -33,7 +33,7 @@ public class DhtSensorPoller {
     @Scheduled(fixedRate = 600000)
     public void pollTemperatureAndHumidity() {
         Dht value = dhtReader.getValue();
-        if (value != null && value.getId() == 0) {
+        if (value != null && value.getId() == null) {
                 dhtRepository.save(value);
                 LOG.debug("Saving new temp/humidity data [" + value.getId() + "] : " + value.getHumidity() + "% , " + value.getTemperature() + " °C");
             } else {
