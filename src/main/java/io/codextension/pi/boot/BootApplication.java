@@ -49,9 +49,9 @@ public class BootApplication {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-            DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
+        bean.setPersistenceUnitName("PiUnit");
         bean.setDataSource(dataSource);
         bean.setJpaVendorAdapter(jpaVendorAdapter);
         bean.setPackagesToScan("io.codextension.pi.model");
