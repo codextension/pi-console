@@ -1,39 +1,35 @@
 package io.codextension.pi.model;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Calendar;
+import javax.persistence.*;
 import java.util.Date;
-import java.util.Locale;
 
-/**
- * Created by elie on 09.03.17.
- */
-@Document(collection = "dht")
+@Entity
+@Table(name = "dht")
 public class Dht {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private long id;
+
+    @Column(name = "temperature")
     private float temperature;
+
+    @Column(name = "humidity")
     private float humidity;
+
+    @Version
+    @Column(name = "measured_date")
     private Date measuredDate;
 
     public Dht(float temperature, float humidity) {
         this.temperature = temperature;
         this.humidity = humidity;
-
-        Calendar instance = Calendar.getInstance(Locale.GERMANY);
-        this.measuredDate = instance.getTime();
     }
 
-    public Dht(){
-        Calendar instance = Calendar.getInstance(Locale.GERMANY);
-        this.measuredDate = instance.getTime();
-    }
-
-    public String getId() {
-        return id;
+    public Dht() {
     }
 
     public float getTemperature() {
@@ -54,5 +50,9 @@ public class Dht {
 
     public Date getMeasuredDate() {
         return measuredDate;
+    }
+
+    public long getId() {
+        return id;
     }
 }

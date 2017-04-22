@@ -1,38 +1,42 @@
 package io.codextension.pi.model;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Calendar;
+import javax.persistence.*;
 import java.util.Date;
-import java.util.Locale;
 
-/**
- * Created by elie on 16.04.17.
- */
-@Document(collection = "dust")
+@Entity
+@Table(name = "dust")
 public class Dust {
+
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private long id;
+
+    @Column(name = "value_measured")
     private double valueMeasured;
+
+    @Column(name = "voltage")
     private double voltage;
+
+    @Column(name = "density")
     private double density;
+
+    @Version
+    @Column(name = "measured_date")
     private Date measuredDate;
 
     public Dust() {
-        Calendar instance = Calendar.getInstance(Locale.GERMANY);
-        this.measuredDate = instance.getTime();
     }
 
     public Dust(double valueMeasured, double voltage, double density) {
         this.valueMeasured = valueMeasured;
         this.voltage = voltage;
         this.density = density;
-        Calendar instance = Calendar.getInstance(Locale.GERMANY);
-        this.measuredDate = instance.getTime();
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
@@ -62,9 +66,5 @@ public class Dust {
 
     public Date getMeasuredDate() {
         return measuredDate;
-    }
-
-    public void setMeasuredDate(Date measuredDate) {
-        this.measuredDate = measuredDate;
     }
 }
