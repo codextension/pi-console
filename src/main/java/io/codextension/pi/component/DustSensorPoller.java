@@ -29,6 +29,7 @@ public class DustSensorPoller {
 
     @PostConstruct
     public void init() {
+        latestValueMeasured = new Dust();
     }
 
     @Scheduled(fixedRate = 1000)
