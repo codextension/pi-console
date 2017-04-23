@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by elie on 09.03.17.
@@ -37,7 +38,7 @@ public class DustSensorPoller {
             value = dustSensorReader.getValue();
             if (value != null && value.getDensity() > 0 &&
                     (Math.abs(latestValueMeasured.getValueMeasured() - value.getValueMeasured()) > 99
-                            || (value.getMeasuredDate().getTime() - latestValueMeasured.getMeasuredDate().getTime()) > 60000)) {
+                            || (new Date().getTime() - latestValueMeasured.getMeasuredDate().getTime()) > 60000)) {
                 latestValueMeasured = dustSensorRepository.save(value);
                 LOG.debug("Saving new dust density data: " + value.getDensity() + " µg/m3");
             }
