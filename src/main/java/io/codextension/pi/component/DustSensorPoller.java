@@ -21,7 +21,7 @@ public class DustSensorPoller {
     private static final Logger LOG = LoggerFactory.getLogger(DustSensorPoller.class);
     @Autowired
     private DustSensorReader dustSensorReader;
-    private double latestValueMeasured;
+    private Dust latestValueMeasured;
 
     @Autowired
     private DustSensorRepository dustSensorRepository;
@@ -35,9 +35,10 @@ public class DustSensorPoller {
         Dust value = null;
         try {
             value = dustSensorReader.getValue();
-            if (value != null && value.getDensity() > 0 && Math.abs(latestValueMeasured - value.getValueMeasured()) > 99) {
-                latestValueMeasured = value.getValueMeasured();
-                dustSensorRepository.save(value);
+            if (value != null && value.getDensity() > 0 &&
+                    (Math.abs(latestValueMeasured.getValueMeasured() - value.getValueMeasured()) > 99
+                            || (value.getMeasuredDate().getTime() - latestValueMeasured.getMeasuredDate().getTime()) > 60000)) {
+                latestValueMeasured = dustSensorRepository.save(value);
                 LOG.debug("Saving new dust density data: " + value.getDensity() + " µg/m3");
             }
         } catch (IOException e) {
