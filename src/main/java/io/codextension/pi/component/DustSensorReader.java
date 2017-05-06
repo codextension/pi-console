@@ -16,12 +16,13 @@ import javax.annotation.PreDestroy;
 import java.io.IOException;
 
 /**
- * Created by elie on 16.04.17.
+ * Created by elie on PIN_NB.04.17.
  */
 @Component
 @Scope("singleton")
 public class DustSensorReader {
 
+    private static final int PIN_NB = 16;
     private MCP3008GpioProvider provider;
     private Dust previousValue;
 
@@ -30,7 +31,7 @@ public class DustSensorReader {
         try {
             provider = new MCP3008GpioProvider(SpiChannel.CS0, SpiDevice.DEFAULT_SPI_SPEED, SpiDevice.DEFAULT_SPI_MODE, false);
             provider.export(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
-            Gpio.pinMode(16, Gpio.OUTPUT);
+            Gpio.pinMode(PIN_NB, Gpio.OUTPUT);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,7 +39,7 @@ public class DustSensorReader {
 
     @PreDestroy
     public void destroy() {
-        GpioUtil.unexport(16);
+        GpioUtil.unexport(PIN_NB);
         provider.unexport(MCP3008Pin.CH0);
     }
 
@@ -57,13 +58,13 @@ public class DustSensorReader {
     public synchronized Dust getValue() throws IOException {
 
 
-        Gpio.digitalWrite(16, Gpio.LOW);
+        Gpio.digitalWrite(PIN_NB, Gpio.LOW);
         Gpio.delayMicroseconds(280);
         double inValue = provider.getImmediateValue(MCP3008Pin.CH0);
         double voltage = ((inValue * 3.3) / 1024.0);
         double dustDensity = (voltage * 0.17 - 0.1) * 1000;
         Gpio.delayMicroseconds(40);
-        Gpio.digitalWrite(16, Gpio.HIGH);
+        Gpio.digitalWrite(PIN_NB, Gpio.HIGH);
 
 
         previousValue = new Dust(inValue, voltage, dustDensity);
