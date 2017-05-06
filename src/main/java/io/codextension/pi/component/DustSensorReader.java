@@ -30,7 +30,7 @@ public class DustSensorReader {
         try {
             provider = new MCP3008GpioProvider(SpiChannel.CS0, SpiDevice.DEFAULT_SPI_SPEED, SpiDevice.DEFAULT_SPI_MODE, false);
             provider.export(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
-            Gpio.pinMode(12, Gpio.OUTPUT);
+            Gpio.pinMode(16, Gpio.OUTPUT);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,7 +38,7 @@ public class DustSensorReader {
 
     @PreDestroy
     public void destroy() {
-        GpioUtil.unexport(12);
+        GpioUtil.unexport(16);
         provider.unexport(MCP3008Pin.CH0);
     }
 
