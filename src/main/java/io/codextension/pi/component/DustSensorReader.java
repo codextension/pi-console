@@ -57,13 +57,13 @@ public class DustSensorReader {
     public synchronized Dust getValue() throws IOException {
 
 
-        Gpio.digitalWrite(12, Gpio.LOW);
+        Gpio.digitalWrite(16, Gpio.LOW);
         Gpio.delayMicroseconds(280);
         double inValue = provider.getImmediateValue(MCP3008Pin.CH0);
         double voltage = ((inValue * 3.3) / 1024.0);
         double dustDensity = (voltage * 0.17 - 0.1) * 1000;
         Gpio.delayMicroseconds(40);
-        Gpio.digitalWrite(12, Gpio.HIGH);
+        Gpio.digitalWrite(16, Gpio.HIGH);
 
 
         previousValue = new Dust(inValue, voltage, dustDensity);
