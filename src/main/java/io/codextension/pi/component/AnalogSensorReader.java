@@ -22,8 +22,8 @@ import java.io.IOException;
  */
 @Component
 @Scope("singleton")
-public class DustSensorReader {
-    private static final Logger LOG = LoggerFactory.getLogger(DustSensorReader.class);
+public class AnalogSensorReader {
+    private static final Logger LOG = LoggerFactory.getLogger(AnalogSensorReader.class);
 
     private static final int PIN_NB = 16;
     private MCP3008GpioProvider provider;
@@ -59,7 +59,7 @@ public class DustSensorReader {
      * @return
      * @throws IOException
      */
-    public synchronized Dust getValue() throws IOException {
+    public synchronized Dust getDustValue() throws IOException {
 
 
         Gpio.digitalWrite(PIN_NB, Gpio.LOW);
@@ -75,7 +75,13 @@ public class DustSensorReader {
         return previousValue;
     }
 
-    public Dust getPreviousValue() {
+    public synchronized double getNoiseValue() throws IOException {
+        double inValue = provider.getImmediateValue(MCP3008Pin.CH7);
+        Gpio.delayMicroseconds(280);
+        return inValue;
+    }
+
+    public Dust getPreviousDustValue() {
         return previousValue;
     }
 }

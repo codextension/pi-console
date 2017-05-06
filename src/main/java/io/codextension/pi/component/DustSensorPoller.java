@@ -1,8 +1,6 @@
 package io.codextension.pi.component;
 
-import io.codextension.pi.model.Dht;
 import io.codextension.pi.model.Dust;
-import io.codextension.pi.repository.DhtRepository;
 import io.codextension.pi.repository.DustSensorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +19,7 @@ import java.util.Date;
 public class DustSensorPoller {
     private static final Logger LOG = LoggerFactory.getLogger(DustSensorPoller.class);
     @Autowired
-    private DustSensorReader dustSensorReader;
+    private AnalogSensorReader analogSensorReader;
     private Dust latestValueMeasured;
 
     @Autowired
@@ -36,7 +34,11 @@ public class DustSensorPoller {
     public void pollDustDensity() {
         Dust value = null;
         try {
-            value = dustSensorReader.getValue();
+            value = analogSensorReader.getDustValue();
+            double noiseValue = analogSensorReader.getNoiseValue();
+            if (noiseValue > 0) {
+                LOG.debug("Noise value found is " + noiseValue);
+            }
             if (value != null && value.getDensity() > 0 &&
                     (Math.abs(latestValueMeasured.getValueMeasured() - value.getValueMeasured()) > 99
                             || (new Date().getTime() - latestValueMeasured.getMeasuredDate().getTime()) > 60000)) {

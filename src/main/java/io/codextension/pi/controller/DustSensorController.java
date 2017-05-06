@@ -1,15 +1,6 @@
 package io.codextension.pi.controller;
 
-import com.pi4j.gpio.extension.base.AdcGpioProvider;
-import com.pi4j.gpio.extension.mcp.MCP3008GpioProvider;
-import com.pi4j.gpio.extension.mcp.MCP3008Pin;
-import com.pi4j.io.gpio.PinMode;
-import com.pi4j.io.spi.SpiChannel;
-import com.pi4j.io.spi.SpiDevice;
-import com.pi4j.wiringpi.Gpio;
-import com.pi4j.wiringpi.GpioUtil;
-import io.codextension.pi.component.DustSensorReader;
-import io.codextension.pi.model.Dht;
+import io.codextension.pi.component.AnalogSensorReader;
 import io.codextension.pi.model.Dust;
 import io.codextension.pi.repository.DustSensorRepository;
 import org.slf4j.Logger;
@@ -37,7 +28,7 @@ public class DustSensorController {
     private DustSensorRepository dustSensorRepository;
 
     @Autowired
-    private DustSensorReader dustSensorReader;
+    private AnalogSensorReader analogSensorReader;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -48,7 +39,7 @@ public class DustSensorController {
 
     @RequestMapping("/current")
     public Dust getCurrent() throws InterruptedException, IOException {
-        return dustSensorReader.getPreviousValue();
+        return analogSensorReader.getPreviousDustValue();
     }
 
     @RequestMapping("/range") // ?from=15.09.2012-10:12&to=15.09.2017-10:12
