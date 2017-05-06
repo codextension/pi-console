@@ -32,6 +32,7 @@ public class DustSensorReader {
             provider = new MCP3008GpioProvider(SpiChannel.CS0, SpiDevice.DEFAULT_SPI_SPEED, SpiDevice.DEFAULT_SPI_MODE, false);
             provider.export(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
             Gpio.pinMode(PIN_NB, Gpio.OUTPUT);
+            Gpio.digitalWrite(PIN_NB, Gpio.HIGH);
         } catch (IOException e) {
             e.printStackTrace();
         }
