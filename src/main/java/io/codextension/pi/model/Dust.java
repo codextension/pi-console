@@ -59,4 +59,14 @@ public class Dust extends AbstractPersistable<Long> {
     public Date getMeasuredDate() {
         return measuredDate;
     }
+
+    @Override
+    public String toString() {
+        return "Dust{" +
+                "valueMeasured=" + valueMeasured +
+                ", voltage=" + voltage +
+                ", density=" + density +
+                ", measuredDate=" + measuredDate +
+                '}';
+    }
 }

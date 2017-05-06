@@ -8,6 +8,8 @@ import com.pi4j.io.spi.SpiDevice;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.GpioUtil;
 import io.codextension.pi.model.Dust;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,7 @@ import java.io.IOException;
 @Component
 @Scope("singleton")
 public class DustSensorReader {
+    private static final Logger LOG = LoggerFactory.getLogger(DustSensorReader.class);
 
     private static final int PIN_NB = 16;
     private MCP3008GpioProvider provider;
@@ -69,6 +72,9 @@ public class DustSensorReader {
 
 
         previousValue = new Dust(inValue, voltage, dustDensity);
+        if (previousValue.getDensity() < 0) {
+            LOG.debug(previousValue.toString());
+        }
         return previousValue;
     }
 
