@@ -72,7 +72,6 @@ public class DustSensorReader {
 
 
         previousValue = new Dust(inValue, voltage, dustDensity);
-        LOG.debug(previousValue.toString());
         return previousValue;
     }
 
