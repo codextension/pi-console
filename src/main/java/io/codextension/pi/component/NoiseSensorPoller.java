@@ -25,12 +25,12 @@ public class NoiseSensorPoller {
     public void init() {
     }
 
-    //@Scheduled(fixedRate = 100)
+    @Scheduled(fixedRate = 100)
     public void pollTemperatureAndHumidity() {
         try {
             Double value = analogSensorReader.getNoiseValue();
             if (value > 0) {
-                LOG.debug("Noise value is " + value);
+                LOG.debug("Noise value is " + value + ", voltage = " + ((value * 5) / 1024.0));
             }
         } catch (IOException e) {
             e.printStackTrace();
