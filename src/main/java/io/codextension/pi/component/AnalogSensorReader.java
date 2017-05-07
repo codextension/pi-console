@@ -38,15 +38,6 @@ public class AnalogSensorReader {
             provider.export(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
             Gpio.pinMode(PIN_NB, Gpio.OUTPUT);
             Gpio.digitalWrite(PIN_NB, Gpio.HIGH);
-
-            provider.setEventThreshold(2.0, MCP3008Pin.CH7);
-            provider.addListener(MCP3008Pin.CH7, new PinListener() {
-                @Override
-                public void handlePinEvent(PinEvent event) {
-                    event.getSource();
-                }
-            });
-            provider.setMonitorEnabled(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
