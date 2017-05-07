@@ -35,10 +35,7 @@ public class DustSensorPoller {
         Dust value = null;
         try {
             value = analogSensorReader.getDustValue();
-            double noiseValue = analogSensorReader.getNoiseValue();
-            if (noiseValue > 0) {
-                LOG.debug("Noise value found is " + noiseValue);
-            }
+
             if (value != null && value.getDensity() > 0 &&
                     (Math.abs(latestValueMeasured.getValueMeasured() - value.getValueMeasured()) > 99
                             || (new Date().getTime() - latestValueMeasured.getMeasuredDate().getTime()) > 60000)) {
