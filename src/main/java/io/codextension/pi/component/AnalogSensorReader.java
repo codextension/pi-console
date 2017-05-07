@@ -3,6 +3,8 @@ package io.codextension.pi.component;
 import com.pi4j.gpio.extension.mcp.MCP3008GpioProvider;
 import com.pi4j.gpio.extension.mcp.MCP3008Pin;
 import com.pi4j.io.gpio.PinMode;
+import com.pi4j.io.gpio.event.PinEvent;
+import com.pi4j.io.gpio.event.PinListener;
 import com.pi4j.io.spi.SpiChannel;
 import com.pi4j.io.spi.SpiDevice;
 import com.pi4j.wiringpi.Gpio;
@@ -36,6 +38,14 @@ public class AnalogSensorReader {
             provider.export(MCP3008Pin.CH0, PinMode.ANALOG_INPUT);
             Gpio.pinMode(PIN_NB, Gpio.OUTPUT);
             Gpio.digitalWrite(PIN_NB, Gpio.HIGH);
+
+            provider.setEventThreshold(2.0, MCP3008Pin.CH7);
+            provider.addListener(MCP3008Pin.CH7, new PinListener() {
+                @Override
+                public void handlePinEvent(PinEvent event) {
+                    event.getSource();
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,7 +86,7 @@ public class AnalogSensorReader {
     }
 
     public synchronized double getNoiseValue() throws IOException {
-        double inValue = provider.getImmediateValue(MCP3008Pin.CH7);
+        double inValue = provider.getValue(MCP3008Pin.CH7);
         Gpio.delayMicroseconds(280);
         return inValue;
     }
