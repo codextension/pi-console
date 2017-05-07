@@ -25,7 +25,7 @@ public class NoiseSensorPoller {
     public void init() {
     }
 
-    @Scheduled(fixedRate = 100)
+    //@Scheduled(fixedRate = 100)
     public void pollTemperatureAndHumidity() {
         try {
             Double value = analogSensorReader.getNoiseValue();
