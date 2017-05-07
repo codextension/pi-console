@@ -19,6 +19,7 @@ import java.io.IOException;
 @Component
 public class DhtSensorPoller {
     private static final Logger LOG = LoggerFactory.getLogger(DhtSensorPoller.class);
+    private static int counter = 3;
 
     @Autowired
     private DhtReader dhtReader;
@@ -34,10 +35,13 @@ public class DhtSensorPoller {
     public void pollTemperatureAndHumidity() {
         Dht value = dhtReader.getValue();
         if (value != null && value.getId() == null) {
+            counter = 3;
                 dhtRepository.save(value);
                 LOG.debug("Saving new temp/humidity data [" + value.getId() + "] : " + value.getHumidity() + "% , " + value.getTemperature() + " °C");
-            } else {
+        } else if (counter > 0) {
+            counter--;
                 try {
+                    LOG.warn(counter + " attempts left ...");
                     Thread.sleep(2000);
                     pollTemperatureAndHumidity();
                 } catch (InterruptedException e) {
