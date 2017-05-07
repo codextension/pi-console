@@ -46,6 +46,7 @@ public class AnalogSensorReader {
                     event.getSource();
                 }
             });
+            provider.setMonitorEnabled(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
