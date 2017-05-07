@@ -24,25 +24,7 @@ public class NoiseSensorPoller {
     @Autowired
     private AnalogSensorReader analogSensorReader;
 
-    @PostConstruct
-    public void init() {
-        GpioUtil.export(5, GpioUtil.DIRECTION_OUT);
-        GpioUtil.export(6, GpioUtil.DIRECTION_OUT);
-        GpioUtil.export(13, GpioUtil.DIRECTION_OUT);
 
-        Gpio.pinMode(5, Gpio.OUTPUT);
-        Gpio.pinMode(6, Gpio.OUTPUT);
-        Gpio.pinMode(13, Gpio.OUTPUT);
-
-    }
-
-
-    @PreDestroy
-    public void destroy() {
-        GpioUtil.unexport(5);
-        GpioUtil.unexport(6);
-        GpioUtil.unexport(13);
-    }
 
     @Scheduled(fixedRate = 100)
     public void pollTemperatureAndHumidity() {
