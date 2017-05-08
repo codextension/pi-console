@@ -41,7 +41,7 @@ public class NoiseSensorController {
         return polledValue;
     }
 
-    @Scheduled(fixedRate = 1)
+    //@Scheduled(fixedRate = 1)
     public void pollNoise() {
         try {
             polledValue = analogSensorReader.getNoiseValue();
