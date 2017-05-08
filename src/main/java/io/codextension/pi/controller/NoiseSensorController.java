@@ -41,12 +41,11 @@ public class NoiseSensorController {
         return polledValue;
     }
 
-    //@Scheduled(fixedRate = 1)
+    @Scheduled(fixedRate = 1)
     public void pollNoise() {
         try {
             polledValue = analogSensorReader.getNoiseValue();
             Double voltage = (polledValue * 5) / 1024.0;
-            LOG.debug("Noise value is " + polledValue + ", voltage = " + voltage);
         } catch (IOException e) {
             e.printStackTrace();
         }
