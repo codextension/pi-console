@@ -44,7 +44,7 @@ public class NoiseSensorPoller {
         GpioUtil.unexport(13);
     }*/
 
-    @Scheduled(fixedRate = 10)
+    @Scheduled(fixedRate = 1)
     public void pollNoise() {
         try {
             Double value = analogSensorReader.getNoiseValue();
