@@ -30,7 +30,7 @@ public class DustSensorPoller {
         latestValueMeasured = new Dust();
     }
 
-    //@Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 1000)
     public void pollDustDensity() {
         Dust value = null;
         try {
