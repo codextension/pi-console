@@ -44,11 +44,10 @@ public class NoiseSensorPoller {
         GpioUtil.unexport(13);
     }*/
 
-    //@Scheduled(fixedRate = 1000)
+    //@Scheduled(fixedRate = 10)
     public void pollNoise() {
         try {
             Double value = analogSensorReader.getNoiseValue();
-            if (value > 0) {
                 Double voltage = (value * 5) / 1024.0;
                 LOG.debug("Noise value is " + value + ", voltage = " + voltage);
 /*                if (voltage < 1.2) {
@@ -68,7 +67,6 @@ public class NoiseSensorPoller {
                     Gpio.digitalWrite(6, Gpio.LOW);
                     Gpio.digitalWrite(13, Gpio.HIGH);
                 }*/
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }

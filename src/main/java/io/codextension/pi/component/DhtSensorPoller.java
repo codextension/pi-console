@@ -32,7 +32,7 @@ public class DhtSensorPoller {
     public void init(){
     }
 
-    @Scheduled(fixedRate = 600000)
+    //@Scheduled(fixedRate = 600000)
     public void pollTemperatureAndHumidity() {
         Dht value = dhtReader.getValue();
         if (value != null && value.getId() == null) {
