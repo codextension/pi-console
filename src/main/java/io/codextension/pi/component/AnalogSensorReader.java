@@ -78,7 +78,7 @@ public class AnalogSensorReader {
     }
 
     public synchronized double getNoiseValue() throws IOException {
-        double inValue = provider.getImmediateValue(MCP3008Pin.CH7);
+        double inValue = provider.getImmediateValue(MCP3008Pin.CH6);
         return inValue;
     }
 
