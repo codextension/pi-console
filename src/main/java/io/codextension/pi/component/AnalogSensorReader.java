@@ -3,8 +3,6 @@ package io.codextension.pi.component;
 import com.pi4j.gpio.extension.mcp.MCP3008GpioProvider;
 import com.pi4j.gpio.extension.mcp.MCP3008Pin;
 import com.pi4j.io.gpio.PinMode;
-import com.pi4j.io.gpio.event.PinEvent;
-import com.pi4j.io.gpio.event.PinListener;
 import com.pi4j.io.spi.SpiChannel;
 import com.pi4j.io.spi.SpiDevice;
 import com.pi4j.wiringpi.Gpio;
@@ -79,6 +77,7 @@ public class AnalogSensorReader {
 
     public synchronized double getNoiseValue() throws IOException {
         double inValue = provider.getImmediateValue(MCP3008Pin.CH6);
+        Gpio.delayMicroseconds(10);
         return inValue;
     }
 
