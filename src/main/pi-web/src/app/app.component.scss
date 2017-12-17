@@ -1,0 +1,72 @@
+.panel-green {
+  border-color: #5cb85c;
+}
+
+.panel-green > .panel-heading {
+  color: #ffffff;
+  background-color: #5cb85c;
+  border-color: #5cb85c;
+}
+
+.panel-green > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #5cb85c;
+}
+
+.panel-green > .panel-heading .badge {
+  color: #5cb85c;
+  background-color: #ffffff;
+}
+
+.panel-green > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #5cb85c;
+}
+
+.panel-red {
+  border-color: #d9534f;
+}
+
+.panel-red > .panel-heading {
+  color: #ffffff;
+  background-color: #d9534f;
+  border-color: #d9534f;
+}
+
+.panel-red > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #d9534f;
+}
+
+.panel-red > .panel-heading .badge {
+  color: #d9534f;
+  background-color: #ffffff;
+}
+
+.panel-red > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #d9534f;
+}
+
+.panel-yellow {
+  border-color: #f0ad4e;
+}
+
+.panel-yellow > .panel-heading {
+  color: #ffffff;
+  background-color: #f0ad4e;
+  border-color: #f0ad4e;
+}
+
+.panel-yellow > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #f0ad4e;
+}
+
+.panel-yellow > .panel-heading .badge {
+  color: #f0ad4e;
+  background-color: #ffffff;
+}
+
+.panel-yellow > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #f0ad4e;
+}
+
+.margin10px {
+  margin-top: 10px;
+}
