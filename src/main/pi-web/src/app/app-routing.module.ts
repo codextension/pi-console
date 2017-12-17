@@ -5,7 +5,7 @@ import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 const routes: Routes = [];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},
     {provide: Window, useValue: window}],
