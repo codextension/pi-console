@@ -68,4 +68,44 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>Work-PC</id>
+
+            <repositories>
+                <repository>
+                    <id>project</id>
+                    <url>https://sbs.t-systems.com/nexus/content/groups/tng/</url>
+                </repository>
+                <repository>
+                    <id>public</id>
+                    <url>https://sbs.t-systems.com/nexus/content/groups/public/</url>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>project</id>
+                    <url>https://sbs.t-systems.com/nexus/content/groups/tng/</url>
+                </pluginRepository>
+                <pluginRepository>
+                    <id>public</id>
+                    <url>https://sbs.t-systems.com/nexus/content/groups/public/</url>
+                </pluginRepository>
+            </pluginRepositories>
+            <distributionManagement>
+                <repository>
+                    <id>releases</id>
+                    <name>Internal Releases</name>
+                    <url>https://sbs.t-systems.com/nexus/content/repositories/tng-releases/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>snapshots</id>
+                    <name>Internal Snapshots</name>
+                    <url>https://sbs.t-systems.com/nexus/content/repositories/tng-snapshots/</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+
 </project>
