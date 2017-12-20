@@ -3,20 +3,26 @@
 }
 
 .panel-green {
-  color: #ffffff;
-  background-color: #5cb85c;
+  .card-body {
+    color: #ffffff;
+    background-color: #5cb85c;
+  }
   border-color: #5cb85c;
 }
 
 .panel-red {
-  color: #ffffff;
-  background-color: #d9534f;
+  .card-body {
+    color: #ffffff;
+    background-color: #d9534f;
+  }
   border-color: #d9534f;
 }
 
 .panel-yellow {
-  color: #ffffff;
-  background-color: #f0ad4e;
+  .card-body {
+    color: #ffffff;
+    background-color: #f0ad4e;
+  }
   border-color: #f0ad4e;
 }
 

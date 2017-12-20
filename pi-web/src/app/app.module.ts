@@ -8,6 +8,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ServicesModule} from './services/services.module';
 import {ComponentsModule} from './components/components.module';
 import {AppRoutingModule} from "./app-routing.module";
+import {ChartsModule} from "ng2-charts";
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {AppRoutingModule} from "./app-routing.module";
     HttpClientModule,
     HttpClientJsonpModule,
     ServicesModule,
-    ComponentsModule
+    ComponentsModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
