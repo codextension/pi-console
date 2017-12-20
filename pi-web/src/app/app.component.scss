@@ -2,30 +2,6 @@
   margin-top: 10px;
 }
 
-.panel-green {
-  .card-body {
-    color: #ffffff;
-    background-color: #5cb85c;
-  }
-  border-color: #5cb85c;
-}
-
-.panel-red {
-  .card-body {
-    color: #ffffff;
-    background-color: #d9534f;
-  }
-  border-color: #d9534f;
-}
-
-.panel-yellow {
-  .card-body {
-    color: #ffffff;
-    background-color: #f0ad4e;
-  }
-  border-color: #f0ad4e;
-}
-
-.text-sm-right {
-  text-align: right !important;
+.flex {
+  flex: 1 0 0%;
 }

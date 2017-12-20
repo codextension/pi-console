@@ -1,83 +1,9 @@
 <div class="container-fluid margin10px small">
   <div class="card-deck">
-    <div class="card panel-green">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-3">
-            <i class="fa fa-thermometer-empty fa-3x"></i>
-          </div>
-          <div class="col-9 text-sm-right card-text" [style.display]="dht22.humidity==0?'inline':'none'">
-            <div>Measuring ...</div>
-          </div>
-          <div class="col-9 text-sm-right card-text" [style.display]="dht22.humidity==0?'none':'inline'">
-            <div class="huge" [innerHTML]="dht22.temperature + ' &deg;C'">Loading ...</div>
-            <div [innerHTML]="dht22.humidity + ' %'">Loading ...</div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <span class="pull-left">View Details</span>
-        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-        <div class="clearfix"></div>
-      </div>
-    </div>
-    <div class="card panel-green">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-3">
-            <i class="fa fa-thermometer-empty fa-3x"></i>
-          </div>
-          <div class="col-9 text-sm-right card-text" [style.display]="dht22.humidity==0?'inline':'none'">
-            <div>Measuring ...</div>
-          </div>
-          <div class="col-9 text-sm-right card-text" [style.display]="dht22.humidity==0?'none':'inline'">
-            <div class="huge" [innerHTML]="dht22.temperature + ' &deg;C'">Loading ...</div>
-            <div [innerHTML]="dht22.humidity + ' %'">Loading ...</div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <span class="pull-left">View Details</span>
-        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-        <div class="clearfix"></div>
-      </div>
-    </div>
-    <div class="card panel-red">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-3">
-            <i class="fa fa-subway fa-3x"></i>
-          </div>
-          <div class="col-9 text-sm-right card-text" [style.display]="dust.density<=0?'inline':'none'">
-            <div>Measuring ...</div>
-          </div>
-          <div class="col-9 text-sm-right card-text" [style.display]="dust.density<=0?'none':'inline'">
-            <div class="huge" [innerHTML]="dust.density.toFixed(2) + ' µg/m3'">Loading ...</div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <span class="pull-left">View Details</span>
-        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-        <div class="clearfix"></div>
-      </div>
-    </div>
-    <div class="card panel-yellow">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-3">
-            <i class="fa fa-deaf fa-3x"></i>
-          </div>
-          <div class="col-9 text-sm-right card-text">
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <span class="pull-left">View Details</span>
-        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-        <div class="clearfix"></div>
-      </div>
-    </div>
+    <widget class="flex"></widget>
+    <widget class="flex"></widget>
+    <widget class="flex"></widget>
+    <widget class="flex"></widget>
   </div>
   <router-outlet></router-outlet>
 </div>
