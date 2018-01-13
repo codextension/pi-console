@@ -1,9 +1,7 @@
 package io.codextension.pi.component;
 
 import io.codextension.pi.model.Dht;
-import io.codextension.pi.model.Dust;
 import io.codextension.pi.repository.DhtRepository;
-import io.codextension.pi.repository.DustSensorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 
 /**
  * Created by elie on 09.03.17.
