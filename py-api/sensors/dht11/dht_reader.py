@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 import time
-from dht11 import DHT11, DHT11Reader
+from .dht11 import DHT11, DHT11Result
 import datetime
 
 class DHT11Reader:
