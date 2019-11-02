@@ -1,16 +1,17 @@
 import RPi.GPIO as GPIO
-import time
 from .dht11 import DHT11, DHT11Result
 import datetime
+import asyncio
 
 class DHT11Reader:
 
-	def __init__(self):
+	def __init__(self, pin):
+		self.pin=pin
 		GPIO.setwarnings(True)
 		GPIO.setmode(GPIO.BCM)
 
-	def poll_data(self):
-		instance = DHT11(pin=18)
+	async def poll_data(self, delay_time=60):
+		instance = DHT11(self.pin)
 		degree_sign= u'\N{DEGREE SIGN}'
 		try:
 			while True:
@@ -20,7 +21,7 @@ class DHT11Reader:
 					print("Temperature: %-3.1f %sC" % (result.temperature,degree_sign))
 					print("Humidity: %-3.1f %%" % result.humidity)
 				
-				time.sleep(60)
+				await asyncio.sleep(delay_time)
 		except KeyboardInterrupt:
 			print("Cleanup GPIO connections ...")
 			GPIO.cleanup()

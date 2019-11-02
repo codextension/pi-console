@@ -1,5 +1,6 @@
-from sensors.dht11.dht_reader import DHT11Reader
+from sensors.common import Sensors
 
-dht_instance = DHT11Reader()
 
-dht_instance.poll_data()
+s = Sensors()
+
+s.start()
