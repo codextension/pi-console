@@ -1,14 +1,14 @@
-from .dht11.dht_reader import DHT11Reader
+from .dht11 import DHT11
 import asyncio
 
 class Sensors:
 
     def __init__(self):
-        self.dht_instance = DHT11Reader(18)
+        self.dht_instance = DHT11(18)
         pass
 
     async def __collect_data(self):
-        task = asyncio.create_task(self.dht_instance.poll_data(5))
+        task = asyncio.gather(self.dht_instance.poll(5))
         print('running further')
         try:
             await task

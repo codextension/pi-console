@@ -1,4 +1,4 @@
-from sensors.common import Sensors
+from sensors.executor import Sensors
 
 
 s = Sensors()
