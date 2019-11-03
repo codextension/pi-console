@@ -30,8 +30,6 @@ class DHT11:
 
     def __init__(self, pin):
         self.__pin = pin
-        RPi.GPIO.setwarnings(True)
-        RPi.GPIO.setmode(RPi.GPIO.BCM)
 
     async def poll(self, delay_time=60):
         degree_sign= u'\N{DEGREE SIGN}'
