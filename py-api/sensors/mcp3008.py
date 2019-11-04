@@ -45,13 +45,14 @@ class MCP3008(object):
         noise_intensity = (noise_value * 5) / 1024.0
         print(f'Noise value: {noise_value}, Intensity: {noise_intensity}', end='\r')
 
-
+"""
 mcp = MCP3008(16)
 
 try:
     while(True):
         mcp.read_noise()
-        time.sleep(0.0001)
+        time.sleep(0.001)
 except KeyboardInterrupt:
     print("Cleanup GPIO connections ...")
-    RPi.GPIO.cleanup() 
+    RPi.GPIO.cleanup()
+"""
