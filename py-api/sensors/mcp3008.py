@@ -3,14 +3,13 @@ import RPi.GPIO
 import datetime
 import asyncio
 import spidev
+from db.db_connector import DBConnector
 
-class MCP3008(object):
+class MCP3008:
     
-    def __init__(self, pin):
-        RPi.GPIO.setwarnings(True)
-        RPi.GPIO.setmode(RPi.GPIO.BCM)
-
+    def __init__(self, pin, db):
         self.__pin = pin
+        self.__db= db
         self.__spi = spidev.SpiDev()
         self.__spi.open(0,0)
         self.__spi.mode = 0b00
@@ -27,7 +26,7 @@ class MCP3008(object):
         data = ((adc[1]&3) << 8) + adc[2]
         return data
 
-    def read_dust(self):
+    def __read_dust(self):
         # Initialising the PIN
         self.__send_and_sleep(RPi.GPIO.LOW, 0.28)
 
@@ -39,11 +38,31 @@ class MCP3008(object):
         time.sleep(0.004)
         # Done, reset the channel
         self.__send_and_sleep(RPi.GPIO.HIGH)
+        return (dust_value, dust_voltage, dust_density)
     
-    def read_noise(self):
+    def __read_noise(self):
         noise_value = self.__analog_input(6)
         noise_intensity = (noise_value * 5) / 1024.0
         print(f'Noise value: {noise_value}, Intensity: {noise_intensity}', end='\r')
+        return (noise_value, noise_intensity)
+
+    async def read_dust(self):
+        try:
+            while True:
+                dust_res = self.__read_dust()
+                await asyncio.sleep(1)
+        except KeyboardInterrupt:
+            print("Cleanup GPIO connections ...")
+            RPi.GPIO.cleanup()         
+
+    async def read_noise(self):
+        try:
+            while True:
+                noise_res = self.__read_noise()
+                await asyncio.sleep(0.0001)
+        except KeyboardInterrupt:
+            print("Cleanup GPIO connections ...")
+            RPi.GPIO.cleanup()   
 
 """
 mcp = MCP3008(16)

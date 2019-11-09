@@ -2,6 +2,7 @@ import time
 import RPi.GPIO
 import datetime
 import asyncio
+from db.db_connector import DBConnector
 
 class DHT11Result:
     'DHT11 sensor result returned by DHT11.read() method'
@@ -28,18 +29,17 @@ class DHT11:
 
     __pin = 0
 
-    def __init__(self, pin):
+    def __init__(self, pin, db):
         self.__pin = pin
+        self.__db = db
 
-    async def poll(self, delay_time=60):
+    async def read_temp(self, delay_time=60):
         degree_sign= u'\N{DEGREE SIGN}'
         try:
             while True:
                 result = self.read()
                 if result.is_valid():
-                    print("Last valid input: " + str(datetime.datetime.now()))
-                    print("Temperature: %-3.1f %sC" % (result.temperature,degree_sign))
-                    print("Humidity: %-3.1f %%" % result.humidity)
+                    print("Temperature: %-3.1f %sC, Humidity: %-3.1f %%" % (result.temperature,degree_sign,result.humidity), end='\r')
                 
                 await asyncio.sleep(delay_time)
         except KeyboardInterrupt:
