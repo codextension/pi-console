@@ -15,7 +15,7 @@ class Sensors:
         self.mcp3008_instance = MCP3008(16,self.__db)
 
     async def __collect_data(self):
-        task = asyncio.gather(self.dht_instance.read_temp(5), self.mcp3008_instance.read_dust(), self.mcp3008_instance.read_noise())
+        task = asyncio.gather(self.dht_instance.read_temp(), self.mcp3008_instance.read_dust()) # , self.mcp3008_instance.read_noise()
         print('running further')
         try:
             await task

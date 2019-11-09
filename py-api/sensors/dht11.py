@@ -33,12 +33,13 @@ class DHT11:
         self.__pin = pin
         self.__db = db
 
-    async def read_temp(self, delay_time=60):
+    async def read_temp(self, delay_time=1800):
         degree_sign= u'\N{DEGREE SIGN}'
         try:
             while True:
                 result = self.read()
                 if result.is_valid():
+                    self.__db.new_dht11(result.temperature, result.humidity)
                     print("Temperature: %-3.1f %sC, Humidity: %-3.1f %%" % (result.temperature,degree_sign,result.humidity), end='\r')
                 
                 await asyncio.sleep(delay_time)

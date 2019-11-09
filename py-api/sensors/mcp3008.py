@@ -34,7 +34,7 @@ class MCP3008:
         dust_value = self.__analog_input(0)
         dust_voltage = (dust_value * 5) / 1024.0
         dust_density = (dust_voltage * 0.17 - 0.1) * 1000
-        print(f'Dust value: {dust_value}, Density: {dust_density}', end='\r')
+        # print(f'Dust value: {dust_value}, Density: {dust_density}', end='\r')
         time.sleep(0.004)
         # Done, reset the channel
         self.__send_and_sleep(RPi.GPIO.HIGH)
@@ -43,13 +43,20 @@ class MCP3008:
     def __read_noise(self):
         noise_value = self.__analog_input(6)
         noise_intensity = (noise_value * 5) / 1024.0
-        print(f'Noise value: {noise_value}, Intensity: {noise_intensity}', end='\r')
+        # print(f'Noise value: {noise_value}, Intensity: {noise_intensity}', end='\r')
         return (noise_value, noise_intensity)
 
     async def read_dust(self):
+        previous_value = None
         try:
             while True:
-                dust_res = self.__read_dust()
+                (dust_value, dust_voltage, dust_density) = self.__read_dust()
+                if(dust_value is not None and dust_density > 0):
+                    if (previous_value is None or (previous_value != dust_value and abs(previous_value-dust_value)>5)):
+                        self.__db.new_mcp3008(dust_value, dust_voltage, dust_density)
+                        print(f'Dust value: {dust_value}, Density: {dust_density}', end='\r')
+                        previous_value = dust_value
+
                 await asyncio.sleep(1)
         except KeyboardInterrupt:
             print("Cleanup GPIO connections ...")
