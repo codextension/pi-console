@@ -7,9 +7,10 @@ from db.db_connector import DBConnector
 
 class MCP3008:
     
-    def __init__(self, pin, db):
+    def __init__(self, pin, db, delay_time=1):
         self.__pin = pin
-        self.__db= db
+        self.__db = db
+        self.__delay_time=delay_time
         self.__spi = spidev.SpiDev()
         self.__spi.open(0,0)
         self.__spi.mode = 0b00
@@ -34,7 +35,7 @@ class MCP3008:
         dust_value = self.__analog_input(0)
         dust_voltage = (dust_value * 5) / 1024.0
         dust_density = (dust_voltage * 0.17 - 0.1) * 1000
-        # print(f'Dust value: {dust_value}, Density: {dust_density}', end='\r')
+        #print(f'Dust value: {dust_value}, Density: {dust_density}', end='\r')
         time.sleep(0.004)
         # Done, reset the channel
         self.__send_and_sleep(RPi.GPIO.HIGH)
@@ -54,10 +55,10 @@ class MCP3008:
                 if(dust_value is not None and dust_density > 0):
                     if (previous_value is None or (previous_value != dust_value and abs(previous_value-dust_value)>5)):
                         self.__db.new_mcp3008(dust_value, dust_voltage, dust_density)
-                        print(f'Dust value: {dust_value}, Density: {dust_density}', end='\r')
+                        # print(f'Dust value: {dust_value}, Density: {dust_density}', end='\r')
                         previous_value = dust_value
 
-                await asyncio.sleep(1)
+                await asyncio.sleep(self.__delay_time)
         except KeyboardInterrupt:
             print("Cleanup GPIO connections ...")
             RPi.GPIO.cleanup()         
@@ -71,14 +72,17 @@ class MCP3008:
             print("Cleanup GPIO connections ...")
             RPi.GPIO.cleanup()   
 
-"""
+
+'''
+RPi.GPIO.setwarnings(False)
+RPi.GPIO.setmode(RPi.GPIO.BCM)
 mcp = MCP3008(16)
 
 try:
     while(True):
-        mcp.read_noise()
+        mcp.read_dust()
         time.sleep(0.001)
 except KeyboardInterrupt:
     print("Cleanup GPIO connections ...")
     RPi.GPIO.cleanup()
-"""
+'''
