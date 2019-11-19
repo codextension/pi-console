@@ -7,7 +7,7 @@ from db.db_connector import DBConnector
 
 class MCP3008:
     
-    def __init__(self, pin, db, delay_time=1):
+    def __init__(self, pin, db, delay_time=1800):
         self.__pin = pin
         self.__db = db
         self.__delay_time=delay_time
