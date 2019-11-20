@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from db_connector import DBConnector
+from db.db_connector import DBConnector
 
 app = Flask(__name__)
 
@@ -7,7 +7,7 @@ app = Flask(__name__)
 def index():
     return jsonify({'version': '1.0'})
 
-@app.route('/dht11/v1.0/current', methods=['GET'])
+@app.route('/temperature/current', methods=['GET'])
 def get_dht11():
     db = DBConnector('/home/ubuntu/db/py_api.db')
     latest_data = db.get_latest_dht11()

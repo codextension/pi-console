@@ -41,7 +41,7 @@ class DHT11:
                 result = self.read()
                 if result.is_valid():
                     self.__db.new_dht11(result.temperature, result.humidity)
-                    #print("Temperature: %-3.1f %sC, Humidity: %-3.1f %%" % (result.temperature,degree_sign,result.humidity), end='\r')
+                    print("Temperature: %-3.1f %sC, Humidity: %-3.1f %%" % (result.temperature,degree_sign,result.humidity), end='\r')
                 
                 await asyncio.sleep(self.__delay_time)
         except KeyboardInterrupt:

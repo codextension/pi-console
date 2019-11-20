@@ -24,4 +24,5 @@ rebel.xml
 typings/**
 .settings/**
 .vscode
-__pycache__
+__pycache__/
+__init__.pyc
