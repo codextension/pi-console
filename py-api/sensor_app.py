@@ -1,4 +1,4 @@
-from sensors.executor import Sensors
+from sensors.sensors_runner import Sensors
 
 
 s = Sensors()

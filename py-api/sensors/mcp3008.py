@@ -5,6 +5,8 @@ import spidev
 
 class MCP3008:
     
+    NOISE_FREQUENCY=0.0001
+
     def __init__(self, pin, delay_time=1800):
         self.__pin = pin
         self.__delay_time=delay_time
@@ -64,7 +66,7 @@ class MCP3008:
             while True:
                 noise_res = self.__read_noise()
                 yield noise_res
-                time.sleep(0.0001)
+                time.sleep(self.NOISE_FREQUENCY)
         except KeyboardInterrupt:
             RPi.GPIO.cleanup() 
             yield None  
