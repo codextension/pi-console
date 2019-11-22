@@ -26,3 +26,4 @@ typings/**
 .vscode
 __pycache__/
 __init__.pyc
+.venv
