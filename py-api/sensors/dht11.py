@@ -1,8 +1,8 @@
 import time
 import RPi.GPIO
 import datetime
-import asyncio
-from db.db_connector import DBConnector
+
+degree_sign= u'\N{DEGREE SIGN}'
 
 class DHT11Result:
     'DHT11 sensor result returned by DHT11.read() method'
@@ -23,32 +23,38 @@ class DHT11Result:
     def is_valid(self):
         return self.error_code == DHT11Result.ERR_NO_ERROR
 
+    def __str__(self):
+        return 'Temperature: %-3.1f %sC, Humidity: %-3.1f %%' % (self.temperature,degree_sign,self.humidity)
+    
+    def __unicode__(self):
+        return 'Temperature: %-3.1f %sC, Humidity: %-3.1f %%' % (self.temperature,degree_sign,self.humidity)
+    
+    def __repr__(self):
+        return 'Temperature: %-3.1f %sC, Humidity: %-3.1f %%' % (self.temperature,degree_sign,self.humidity)
 
 class DHT11:
     'DHT11 sensor reader class for Raspberry'
 
     __pin = 0
 
-    def __init__(self, pin, db, delay_time=1800):
+    def __init__(self, pin, delay_time=1800):
         self.__delay_time = delay_time
         self.__pin = pin
-        self.__db = db
 
-    async def read_temp(self):
-        degree_sign= u'\N{DEGREE SIGN}'
+    def read_temp(self):
         try:
             while True:
-                result = self.read()
+                result = self.__read()
                 if result.is_valid():
-                    self.__db.new_dht11(result.temperature, result.humidity)
-                    print("Temperature: %-3.1f %sC, Humidity: %-3.1f %%" % (result.temperature,degree_sign,result.humidity), end='\r')
-                
-                await asyncio.sleep(self.__delay_time)
-        except KeyboardInterrupt:
-            print("Cleanup GPIO connections ...")
-            RPi.GPIO.cleanup()   
+                    #print("Temperature: %-3.1f %sC, Humidity: %-3.1f %%" % (result.temperature,degree_sign,result.humidity), end='\r')
+                    yield result
 
-    def read(self):
+                time.sleep(self.__delay_time)
+        except KeyboardInterrupt:
+            RPi.GPIO.cleanup()
+            yield None  
+
+    def __read(self):
         RPi.GPIO.setup(self.__pin, RPi.GPIO.OUT)
 
         # send initial high
