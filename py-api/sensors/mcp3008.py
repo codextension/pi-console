@@ -3,15 +3,13 @@ import RPi.GPIO
 import datetime
 import spidev
 
-class MCP3008:
-    
-    NOISE_FREQUENCY=0.0001
 
-    def __init__(self, pin, delay_time=1800):
+class MCP3008:
+
+    def __init__(self, pin):
         self.__pin = pin
-        self.__delay_time=delay_time
         self.__spi = spidev.SpiDev()
-        self.__spi.open(0,0)
+        self.__spi.open(0, 0)
         self.__spi.mode = 0b00
         self.__spi.max_speed_hz = 1000000
         RPi.GPIO.setup(self.__pin, RPi.GPIO.OUT)
@@ -22,8 +20,8 @@ class MCP3008:
         time.sleep(sleep)
 
     def __analog_input(self, channel):
-        adc = self.__spi.xfer2([1,(8+channel)<<4,0])
-        data = ((adc[1]&3) << 8) + adc[2]
+        adc = self.__spi.xfer2([1, (8+channel) << 4, 0])
+        data = ((adc[1] & 3) << 8) + adc[2]
         return data
 
     def __read_dust(self):
@@ -39,7 +37,7 @@ class MCP3008:
         # Done, reset the channel
         self.__send_and_sleep(RPi.GPIO.HIGH)
         return (dust_value, dust_voltage, dust_density)
-    
+
     def __read_noise(self):
         noise_value = self.__analog_input(6)
         noise_intensity = (noise_value * 5) / 1024.0
@@ -47,29 +45,21 @@ class MCP3008:
         return (noise_value, noise_intensity)
 
     def read_dust(self):
-        previous_value = None
         try:
-            while True:
-                (dust_value, dust_voltage, dust_density) = self.__read_dust()
-                if(dust_value is not None and dust_density > 0):
-                    if (previous_value is None or (previous_value != dust_value and abs(previous_value-dust_value)>5)):
-                        # print(f'Dust value: {dust_value}, Density: {dust_density}', end='\r')
-                        previous_value = dust_value
-                        yield (dust_value, dust_voltage, dust_density)
-                time.sleep(self.__delay_time)
+            (dust_value, dust_voltage, dust_density) = self.__read_dust()
+            return (dust_value, dust_voltage, dust_density)
         except KeyboardInterrupt:
-            RPi.GPIO.cleanup()         
-            yield None
+            RPi.GPIO.cleanup()
+            return None
 
     def read_noise(self):
         try:
-            while True:
-                noise_res = self.__read_noise()
-                yield noise_res
-                time.sleep(self.NOISE_FREQUENCY)
+            noise_res = self.__read_noise()
+            return noise_res
         except KeyboardInterrupt:
-            RPi.GPIO.cleanup() 
-            yield None  
+            RPi.GPIO.cleanup()
+            return None
+
 
 '''
     def get_dust(self):

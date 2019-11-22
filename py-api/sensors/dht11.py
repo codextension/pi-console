@@ -2,7 +2,8 @@ import time
 import RPi.GPIO
 import datetime
 
-degree_sign= u'\N{DEGREE SIGN}'
+degree_sign = u'\N{DEGREE SIGN}'
+
 
 class DHT11Result:
     'DHT11 sensor result returned by DHT11.read() method'
@@ -24,35 +25,34 @@ class DHT11Result:
         return self.error_code == DHT11Result.ERR_NO_ERROR
 
     def __str__(self):
-        return 'Temperature: %-3.1f %sC, Humidity: %-3.1f %%' % (self.temperature,degree_sign,self.humidity)
-    
+        return 'Temperature: %-3.1f %sC, Humidity: %-3.1f %%' % (self.temperature, degree_sign, self.humidity)
+
     def __unicode__(self):
-        return 'Temperature: %-3.1f %sC, Humidity: %-3.1f %%' % (self.temperature,degree_sign,self.humidity)
-    
+        return 'Temperature: %-3.1f %sC, Humidity: %-3.1f %%' % (self.temperature, degree_sign, self.humidity)
+
     def __repr__(self):
-        return 'Temperature: %-3.1f %sC, Humidity: %-3.1f %%' % (self.temperature,degree_sign,self.humidity)
+        return 'Temperature: %-3.1f %sC, Humidity: %-3.1f %%' % (self.temperature, degree_sign, self.humidity)
+
 
 class DHT11:
     'DHT11 sensor reader class for Raspberry'
 
     __pin = 0
 
-    def __init__(self, pin, delay_time=1800):
-        self.__delay_time = delay_time
+    def __init__(self, pin):
         self.__pin = pin
 
     def read_temp(self):
         try:
-            while True:
-                result = self.__read()
-                if result.is_valid():
-                    #print("Temperature: %-3.1f %sC, Humidity: %-3.1f %%" % (result.temperature,degree_sign,result.humidity), end='\r')
-                    yield result
-
-                time.sleep(self.__delay_time)
+            result = self.__read()
+            if result.is_valid():
+                #print("Temperature: %-3.1f %sC, Humidity: %-3.1f %%" % (result.temperature,degree_sign,result.humidity), end='\r')
+                return result
+            else:
+                return None
         except KeyboardInterrupt:
             RPi.GPIO.cleanup()
-            yield None  
+            return None
 
     def __read(self):
         RPi.GPIO.setup(self.__pin, RPi.GPIO.OUT)
@@ -96,13 +96,13 @@ class DHT11:
         # the_bytes[3]: temperature decimal
 
         humidity = ((the_bytes[0] << 8) + float(the_bytes[1])) / 10
-        if(humidity>100):
-            humidity=the_bytes[0]
+        if(humidity > 100):
+            humidity = the_bytes[0]
 
         temperature = (((the_bytes[2] & 127) << 8) + float(the_bytes[3])) / 10
-        if(temperature>125):
-            temperature=the_bytes[2]
-        if((the_bytes[2] & 128) !=0):
+        if(temperature > 125):
+            temperature = the_bytes[2]
+        if((the_bytes[2] & 128) != 0):
             temperature = -temperature
 
         return DHT11Result(DHT11Result.ERR_NO_ERROR, temperature, humidity)
@@ -142,8 +142,8 @@ class DHT11:
 
         state = STATE_INIT_PULL_DOWN
 
-        lengths = [] # will contain the lengths of data pull up periods
-        current_length = 0 # will contain the length of the previous period
+        lengths = []  # will contain the lengths of data pull up periods
+        current_length = 0  # will contain the length of the previous period
 
         for i in range(len(data)):
 
