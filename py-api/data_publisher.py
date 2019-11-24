@@ -5,12 +5,13 @@ import RPi.GPIO
 import time
 import threading
 
+
 class Sensors:
 
     def __init__(self):
         RPi.GPIO.setwarnings(False)
         RPi.GPIO.setmode(RPi.GPIO.BCM)
-        
+
         self.__db = DBConnector('/home/ubuntu/db/py_api.db')
         self.dht_instance = DHT11(18)
         self.mcp3008_instance = MCP3008(16)
@@ -20,17 +21,17 @@ class Sensors:
             dht = self.dht_instance.read_temp()
             print(dht, end='\r')
             time.sleep(1)
-    
+
     def start_dust(self):
         while True:
             dust = self.mcp3008_instance.read_dust()
-            #print(f'Dust: {dust}', end='\r')
+            # print(f'Dust: {dust}', end='\r')
             time.sleep(0.001)
 
     def start_noise(self):
         while True:
             noise = self.mcp3008_instance.read_noise()
-            #print(f'Noise:{noise}', end='\r')
+            # print(f'Noise:{noise}', end='\r')
             time.sleep(0.0001)
 
     def start(self):
@@ -45,6 +46,7 @@ class Sensors:
         t_2.join()
         t_3.join()
         print('Threads started')
+
 
 s = Sensors()
 
