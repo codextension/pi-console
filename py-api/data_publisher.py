@@ -6,13 +6,14 @@ import time
 import threading
 from pathlib import Path
 
+
 class Sensors:
 
     def __init__(self):
         RPi.GPIO.setwarnings(False)
         RPi.GPIO.setmode(RPi.GPIO.BCM)
-        home = str(Path.home())
-        self.__db = DBConnector(f'{home}/db/py_api.db')
+        home = str(Path.home())+'/db/py_api.db'
+        self.__db = DBConnector(home)
         self.dht_instance = DHT11(18)
         self.mcp3008_instance = MCP3008(16)
 
