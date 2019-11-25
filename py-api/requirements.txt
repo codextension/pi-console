@@ -16,3 +16,6 @@ spidev==3.4
 typed-ast==1.4.0
 Werkzeug==0.16.0
 wrapt==1.11.2
+pyspark==2.4.4
+kafka-python==1.4.7
+lz4==2.1.1

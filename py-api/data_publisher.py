@@ -4,7 +4,8 @@ from db.db_connector import DBConnector
 import RPi.GPIO
 import time
 import threading
-
+from kafka import KafkaProducer
+from kafka.errors import KafkaError
 
 class Sensors:
 
@@ -14,22 +15,26 @@ class Sensors:
         self.__db = DBConnector('py_api.db')
         self.dht_instance = DHT11(18)
         self.mcp3008_instance = MCP3008(16)
+        self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
 
     def start_temp(self):
         while True:
             dht = self.dht_instance.read_temp()
-            print(dht, end='\r')
-            time.sleep(1)
+            self.producer.send('temperature', dht)
+            # print(dht, end='\r')
+            time.sleep(0.1)
 
     def start_dust(self):
         while True:
             dust = self.mcp3008_instance.read_dust()
+            self.producer.send('dust', dust)
             # print(f'Dust: {dust}', end='\r')
-            time.sleep(0.001)
+            time.sleep(0.1)
 
     def start_noise(self):
         while True:
             noise = self.mcp3008_instance.read_noise()
+            self.producer.send('noise', noise)
             # print(f'Noise:{noise}', end='\r')
             time.sleep(0.0001)
 
