@@ -47,12 +47,12 @@ class DHT11:
             result = self.__read()
             if result.is_valid():
                 #print("Temperature: %-3.1f %sC, Humidity: %-3.1f %%" % (result.temperature,degree_sign,result.humidity), end='\r')
-                return result
+                return {'temperature':result.temperature, 'humidity': result.humidity}
             else:
-                return None
+                return {'results': 'emtpy'}
         except KeyboardInterrupt:
             RPi.GPIO.cleanup()
-            return None
+            return {'results': 'empty'}
 
     def __read(self):
         RPi.GPIO.setup(self.__pin, RPi.GPIO.OUT)
