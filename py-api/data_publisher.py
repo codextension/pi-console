@@ -4,7 +4,6 @@ from db.db_connector import DBConnector
 import RPi.GPIO
 import time
 import threading
-from pathlib import Path
 
 
 class Sensors:
@@ -12,8 +11,7 @@ class Sensors:
     def __init__(self):
         RPi.GPIO.setwarnings(False)
         RPi.GPIO.setmode(RPi.GPIO.BCM)
-        home = str(Path.home())+'/db/py_api.db'
-        self.__db = DBConnector(home)
+        self.__db = DBConnector('py_api.db')
         self.dht_instance = DHT11(18)
         self.mcp3008_instance = MCP3008(16)
 
