@@ -5,6 +5,7 @@ import time
 import threading
 from kafka import KafkaProducer
 from kafka.errors import KafkaError
+import json
 
 class Sensors:
 
@@ -13,7 +14,7 @@ class Sensors:
         RPi.GPIO.setmode(RPi.GPIO.BCM)
         self.dht_instance = DHT11(18)
         self.mcp3008_instance = MCP3008(16)
-        self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
+        self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'], value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
     def start_temp(self):
         while True:
