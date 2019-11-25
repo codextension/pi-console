@@ -1,6 +1,5 @@
 from sensors.dht11 import DHT11
 from sensors.mcp3008 import MCP3008
-from db.db_connector import DBConnector
 import RPi.GPIO
 import time
 import threading
@@ -12,7 +11,6 @@ class Sensors:
     def __init__(self):
         RPi.GPIO.setwarnings(False)
         RPi.GPIO.setmode(RPi.GPIO.BCM)
-        self.__db = DBConnector('py_api.db')
         self.dht_instance = DHT11(18)
         self.mcp3008_instance = MCP3008(16)
         self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
