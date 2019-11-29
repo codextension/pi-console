@@ -7,11 +7,16 @@ from pyspark.streaming.kafka import KafkaUtils
 
 if __name__ == "__main__":
     sc = SparkContext(appName="TestApp")
-    ssc = StreamingContext(sc, 2)
+    ssc = StreamingContext(sc, 60)
     kvs = KafkaUtils.createDirectStream(ssc, ["temperature"], {"metadata.broker.list":"localhost:9092"})
     
-    lines = kvs.map(lambda x: x[1])
-    counts = lines.flatMap(lambda line: line.split(" ")).map(lambda word: (word, 1)).reduceByKey(lambda a, b: a+b)
-    counts.pprint()
+    avg_by_key = kvs.mapValues(lambda v: (v, 1)).reduceByKey(lambda a,b: (a[0]+b[0], a[1]+b[1])).mapValues(lambda v: v[0]/v[1])
+    avg_by_key.pprint()
+
+    ssc.start()
+    ssc.awaitTermination()
+    avg_by_key = kvs.mapValues(lambda v: (v, 1)).reduceByKey(lambda a,b: (a[0]+b[0], a[1]+b[1])).mapValues(lambda v: v[0]/v[1])
+    avg_by_key.pprint()
+
     ssc.start()
     ssc.awaitTermination()
