@@ -15,8 +15,3 @@ if __name__ == "__main__":
 
     ssc.start()
     ssc.awaitTermination()
-    avg_by_key = kvs.mapValues(lambda v: (v, 1)).reduceByKey(lambda a,b: (a[0]+b[0], a[1]+b[1])).mapValues(lambda v: v[0]/v[1])
-    avg_by_key.pprint()
-
-    ssc.start()
-    ssc.awaitTermination()
