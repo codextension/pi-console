@@ -1,12 +1,13 @@
 package io.codextension.pi.model;
 
-import org.springframework.data.jpa.domain.AbstractPersistable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import java.util.Date;
+
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
 @Table(name = "dust")

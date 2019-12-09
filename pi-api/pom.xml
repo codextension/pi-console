@@ -15,7 +15,7 @@
     </parent>
 
     <properties>
-        <pi4j.version>1.1</pi4j.version>
+        <pi4j.version>1.2</pi4j.version>
     </properties>
 
     <dependencies>
@@ -47,6 +47,11 @@
             <groupId>com.pi4j</groupId>
             <artifactId>pi4j-device</artifactId>
             <version>${pi4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.2</version>
         </dependency>
     </dependencies>
 

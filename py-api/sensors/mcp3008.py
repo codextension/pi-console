@@ -59,28 +59,3 @@ class MCP3008:
         except KeyboardInterrupt:
             RPi.GPIO.cleanup()
             return {'results': 'emtpy'}
-
-'''
-    def get_dust(self):
-        try:
-            while True:
-                (dust_value, dust_voltage, dust_density) = self.__read_dust()
-                yield (dust_value, dust_voltage, dust_density)
-                time.sleep(self.__delay_time)
-        except KeyboardInterrupt:
-            print("Cleanup GPIO connections ...")
-            RPi.GPIO.cleanup()          
-            yield None
-
-RPi.GPIO.setmode(RPi.GPIO.BCM)
-mcp = MCP3008(16, delay_time=0.001)
-
-generator = mcp.get_dust()
-try:
-    while(True):
-        print(next(generator), end='\r')
-        time.sleep(0.002)
-except StopIteration:
-    print('Nothing to fetch anymore')
-    pass
-'''
