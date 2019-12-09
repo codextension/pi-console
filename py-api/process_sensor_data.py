@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     sc = SparkContext(appName="TestApp")
     ssc = StreamingContext(sc, 60)
-    kvs = KafkaUtils.createDirectStream(ssc, ["temperature"], {"metadata.broker.list":"localhost:9092"})
+    kvs = KafkaUtils.createDirectStream(ssc, ["dust"], {"metadata.broker.list":"localhost:9092"})
 
     avg_by_key = kvs.map(avg_map_func).reduceByKey(avg_reduce_func).mapValues(lambda x: x[0]/x[1])
     avg_by_key.pprint()
