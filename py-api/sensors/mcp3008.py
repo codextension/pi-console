@@ -59,4 +59,4 @@ class MCP3008:
             return {'value': noise_value, 'intensity': noise_intensity}
         except KeyboardInterrupt:
             RPi.GPIO.cleanup()
-            return {'results': 'emtpy'}
+            return {'value': 0, 'intensity': 0}

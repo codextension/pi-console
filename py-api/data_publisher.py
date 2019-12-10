@@ -19,23 +19,21 @@ class Sensors:
     def start_temp(self):
         while True:
             dht = self.dht_instance.read_temp()
-            temp = json.dumps(dht["temperature"]).encode('utf-8')
-            self.producer.send('temperature', key=b"temperature", value=temp)
+            self.producer.send('temperature', key=b"temperature", value=json.dumps(dht["temperature"]).encode('utf-8'))
             # print(dht, end='\r')
             time.sleep(2)
 
     def start_dust(self):
         while True:
             dust = self.mcp3008_instance.read_dust()
-            density = json.dumps(dust["density"]).encode('utf-8')
-            self.producer.send('dust', key=b"density", value=density)
+            self.producer.send('dust', key=b"density", value=json.dumps(dust["density"]).encode('utf-8'))
             # print(f'Dust: {dust}', end='\r')
             time.sleep(2)
 
     def start_noise(self):
         while True:
             noise = self.mcp3008_instance.read_noise()
-            self.producer.send('noise', noise)
+            self.producer.send('noise', key=b"noise", value=json.dumps(noise["value"]).encode('utf-8'))
             # print(f'Noise:{noise}', end='\r')
             time.sleep(0.0001)
 
