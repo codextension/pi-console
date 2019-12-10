@@ -19,7 +19,8 @@ class Sensors:
     def start_temp(self):
         while True:
             dht = self.dht_instance.read_temp()
-            self.producer.send('temperature', dht)
+            temp = json.dumps(dht["temperature"]).encode('utf-8')
+            self.producer.send('temperature', key=b"temperature", value=temp)
             # print(dht, end='\r')
             time.sleep(2)
 
