@@ -20,6 +20,7 @@ class Sensors:
         while True:
             dht = self.dht_instance.read_temp()
             self.producer.send('temperature', key=b"temperature", value=json.dumps(dht["temperature"]).encode('utf-8'))
+            self.producer.send('temperature', key=b"humidity", value=json.dumps(dht["humidity"]).encode('utf-8'))
             # print(dht, end='\r')
             time.sleep(2)
 
@@ -27,6 +28,8 @@ class Sensors:
         while True:
             dust = self.mcp3008_instance.read_dust()
             self.producer.send('dust', key=b"density", value=json.dumps(dust["density"]).encode('utf-8'))
+            self.producer.send('dust', key=b"value", value=json.dumps(dust["value"]).encode('utf-8'))
+            self.producer.send('dust', key=b"voltage", value=json.dumps(dust["voltage"]).encode('utf-8'))
             # print(f'Dust: {dust}', end='\r')
             time.sleep(2)
 
