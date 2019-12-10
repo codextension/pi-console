@@ -14,13 +14,12 @@ class Sensors:
         RPi.GPIO.setmode(RPi.GPIO.BCM)
         self.dht_instance = DHT11(18)
         self.mcp3008_instance = MCP3008(16)
-        self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
+        self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'],value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
     def start_temp(self):
         while True:
             dht = self.dht_instance.read_temp()
-            self.producer.send('temperature', key=b"temperature", value=json.dumps(dht["temperature"]).encode('utf-8'))
-            self.producer.send('temperature', key=b"humidity", value=json.dumps(dht["humidity"]).encode('utf-8'))
+            self.producer.send('temperature', value=dht)
             # print(dht, end='\r')
             time.sleep(2)
 
