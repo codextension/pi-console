@@ -26,7 +26,8 @@ class Sensors:
     def start_dust(self):
         while True:
             dust = self.mcp3008_instance.read_dust()
-            self.producer.send('dust', key=b"density", value=dust["density"])
+            density = json.dumps(dust["density"]).encode('utf-8')
+            self.producer.send('dust', key=b"density", value=density)
             # print(f'Dust: {dust}', end='\r')
             time.sleep(2)
 
