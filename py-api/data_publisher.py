@@ -26,16 +26,14 @@ class Sensors:
     def start_dust(self):
         while True:
             dust = self.mcp3008_instance.read_dust()
-            self.producer.send('dust', key=b"density", value=json.dumps(dust["density"]).encode('utf-8'))
-            self.producer.send('dust', key=b"value", value=json.dumps(dust["value"]).encode('utf-8'))
-            self.producer.send('dust', key=b"voltage", value=json.dumps(dust["voltage"]).encode('utf-8'))
+            self.producer.send('dust', value=dust)
             # print(f'Dust: {dust}', end='\r')
             time.sleep(2)
 
     def start_noise(self):
         while True:
             noise = self.mcp3008_instance.read_noise()
-            self.producer.send('noise', key=b"noise", value=json.dumps(noise["value"]).encode('utf-8'))
+            self.producer.send('noise', value=noise)
             # print(f'Noise:{noise}', end='\r')
             time.sleep(0.0001)
 
