@@ -26,7 +26,7 @@ class Sensors:
     def start_dust(self):
         while True:
             dust = self.mcp3008_instance.read_dust()
-            self.producer.send('dust', key=str.encode("density"), value=dust["density"])
+            self.producer.send('dust', key=b"density", value=dust["density"])
             # print(f'Dust: {dust}', end='\r')
             time.sleep(2)
 
