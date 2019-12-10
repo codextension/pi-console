@@ -1,0 +1,1 @@
+./bin/spark-submit --master local --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.4,org.apache.logging.log4j:log4j-api:2.7,org.apache.logging.log4j:log4j-core:2.7,commons-logging:commons-logging:1.1.1,org.apache.spark:spark-core_2.11:2.4.4,org.apache.spark:spark-sql_2.11:2.4.4 run2.py
