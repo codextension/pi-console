@@ -12,9 +12,9 @@ from pyspark.sql.functions import *
 if __name__ == "__main__":
     temp_schema = StructType(
         [
-            StructField("dust_value", IntegerType(), True),
-            StructField("voltage", DoubleType(), True),
-            StructField("intensity", DoubleType() , True)
+            StructField("value", StringType(), True),
+            StructField("voltage", StringType(), True),
+            StructField("density", StringType() , True)
         ]
     )
 
