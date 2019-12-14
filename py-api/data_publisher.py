@@ -28,7 +28,7 @@ class Sensors:
             dust = self.mcp3008_instance.read_dust()
             self.producer.send('dust', value=dust)
             # print(f'Dust: {dust}', end='\r')
-            time.sleep(0.01)
+            time.sleep(0.5)
 
     def start_noise(self):
         while True:
