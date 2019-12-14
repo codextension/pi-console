@@ -39,4 +39,10 @@ if __name__ == "__main__":
     )
 
     sensor.printSchema()
-    sensor.writeStream.format("console").outputMode("append").start().awaitTermination()
+
+    def process_row(row):
+        print(f'{row["window"]["start"]} -> {row["window"]["end"]} = {row["avg(value)"]}')
+
+    sensor.writeStream.foreach(process_row).start().awaitTermination() 
+
+    # sensor.writeStream.format("console").outputMode("append").start().awaitTermination()

@@ -26,14 +26,14 @@ class MCP3008:
 
     def __read_dust(self):
         # Initialising the PIN
-        self.__send_and_sleep(RPi.GPIO.LOW, 0.28)
+        self.__send_and_sleep(RPi.GPIO.LOW, 0.00028)
 
         # read from MCP3008
         dust_value = self.__analog_input(0)
         dust_voltage = (dust_value * 5) / 1024.0
         dust_density = (dust_voltage * 0.17 - 0.1) * 1000
         #print(f'Dust value: {dust_value}, Density: {dust_density}', end='\r')
-        time.sleep(0.004)
+        time.sleep(0.00004)
         # Done, reset the channel
         self.__send_and_sleep(RPi.GPIO.HIGH)
         return (dust_value, dust_voltage, dust_density)
