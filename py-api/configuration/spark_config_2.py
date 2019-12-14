@@ -10,7 +10,7 @@ from pyspark.sql.functions import *
 
 if __name__ == "__main__":
     spark = SparkSession.builder.appName("StructuredNetworkWordCount").getOrCreate()
-    df = spark.readStream.format('kafka').option("kafka.bootstrap.servers", "192.168.178.63:9092").option("subscribe", "temperature").option("startingOffsets", "earliest").load()
+    df = spark.readStream.format('kafka').option("kafka.bootstrap.servers", "192.168.178.63:9092").option("subscribe", "temperature").option("kafkaConsumer.pollTimeoutMs", "30000").option("startingOffsets", "latest").load()
     df.printSchema()
     
     temp_schema = StructType().add("temperature","float").add("humidity", "float").add("timestamp", "timestamp")
