@@ -47,10 +47,10 @@ class MCP3008:
     def read_dust(self):
         try:
             (dust_value, dust_voltage, dust_density) = self.__read_dust()
-            return {'value':dust_value, 'voltage':dust_voltage, 'density':dust_density}
+            return {'value':dust_value, 'voltage':dust_voltage, 'density':dust_density, 'timestamp': time.time()}
         except KeyboardInterrupt:
             RPi.GPIO.cleanup()
-            return {'value':0, 'voltage':0, 'density':0}
+            return {'value':0, 'voltage':0, 'density':0, 'timestamp': time.time()}
 
     def read_noise(self):
         try:

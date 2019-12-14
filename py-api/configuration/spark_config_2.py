@@ -14,7 +14,8 @@ if __name__ == "__main__":
         [
             StructField("value", IntegerType(), True),
             StructField("voltage", FloatType(), True),
-            StructField("density", DoubleType() , True)
+            StructField("density", DoubleType() , True),
+            StructField("timestamp", TimestampType() , True)
         ]
     )
 
@@ -28,14 +29,14 @@ if __name__ == "__main__":
     )
 
     sensor = df.withColumn("value", df.value.astype("string"))
-    sensor = (
-        sensor.withWatermark("timestamp", "5 minutes")
-        .groupBy(window("timestamp", "2 minutes", "1 minutes"), "value")
-        .count()
-    )
-
     sensor = sensor.select(from_json(sensor.value, temp_schema).alias("data")).select(
         "data.*"
     )
+    sensor = (
+        sensor.withWatermark("timestamp", "5 minutes")
+        .groupBy(window("timestamp", "2 minutes", "1 minutes"), "value")
+        .avg()
+    )
+
     sensor.printSchema()
     sensor.writeStream.format("console").outputMode("append").start().awaitTermination()
