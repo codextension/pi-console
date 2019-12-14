@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     sensor = (
         sensor.withWatermark("timestamp", "5 minutes")
-        .groupBy(window("timestamp", "2 minutes", "1 minutes"))
+        .groupBy(window("timestamp", "1 minutes"))
         .avg("value")
     )
 
