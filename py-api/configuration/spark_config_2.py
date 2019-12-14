@@ -12,29 +12,28 @@ from pyspark.sql.functions import *
 if __name__ == "__main__":
     temp_schema = StructType(
         [
-            StructField("temperature", DoubleType(), True),
-            StructField("humidity", DoubleType() , True),
-            StructField("timestamp", DoubleType(), True),
+            StructField("voltage", DoubleType(), True),
+            StructField("intensity", DoubleType() , True)
         ]
     )
 
-    spark = SparkSession.builder.appName("StructuredNetworkWordCount").getOrCreate()
+    spark = SparkSession.builder.appName("noise_parser").getOrCreate()
     df = (
         spark.readStream.format("kafka")
         .option("kafka.bootstrap.servers", "192.168.178.63:9092")
-        .option("subscribe", "temperature")
+        .option("subscribe", "noise")
         .option("startingOffsets", "earliest")
         .load()
     )
 
     sensor = df.withColumn("value", df.value.astype("string"))
-    '''
+    
     sensor = (
-        sensor.withWatermark("timestamp", "10 minutes")
-        .groupBy(window("timestamp", "20 seconds", "10 seconds"), "value")
+        sensor.withWatermark("timestamp", "5 minutes")
+        .groupBy(window("timestamp", "2 minutes", "1 minutes"), "value")
         .count()
     )
-    '''
+    
     sensor = sensor.select(from_json(sensor.value, temp_schema).alias("data")).select(
         "data.*"
     )

@@ -20,7 +20,7 @@ class Sensors:
         while True:
             dht = self.dht_instance.read_temp()
             self.producer.send('temperature', value=dht)
-            print(dht, end='\r')
+            # print(dht, end='\r')
             time.sleep(2)
 
     def start_dust(self):
@@ -28,7 +28,7 @@ class Sensors:
             dust = self.mcp3008_instance.read_dust()
             self.producer.send('dust', value=dust)
             # print(f'Dust: {dust}', end='\r')
-            time.sleep(2)
+            time.sleep(0.01)
 
     def start_noise(self):
         while True:
