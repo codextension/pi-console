@@ -12,7 +12,7 @@ from pyspark.sql.functions import *
 if __name__ == "__main__":
     temp_schema = StructType(
         [
-            StructField("value", DoubleType(), True),
+            StructField("dust_value", IntegerType(), True),
             StructField("voltage", DoubleType(), True),
             StructField("intensity", DoubleType() , True)
         ]
@@ -29,11 +29,7 @@ if __name__ == "__main__":
 
     sensor = df.withColumn("value", df.value.astype("string"))
     
-    sensor = (
-        sensor.withWatermark("timestamp", "5 minutes")
-        .groupBy(window("timestamp", "30 seconds", "15 seconds"), "value")
-        .count()
-    )
+
 
     sensor = sensor.select(from_json(sensor.value, temp_schema).alias("data")).select(
         "data.*"
