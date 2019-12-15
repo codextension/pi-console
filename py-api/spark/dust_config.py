@@ -40,7 +40,6 @@ class DustConfig():
 
     def start_working(self):
         sensor = self.df.filter("topic == 'dust'")
-        sensor = sensor.withColumn("value", self.df.value.astype("string"))
         sensor = sensor.select(from_json(sensor.value, self.dust_schema).alias("data")).select(
             "data.*"
         )
@@ -63,7 +62,8 @@ class DustConfig():
             .withColumnRenamed("avg(density)", "density")
         )
 
-        sensor.writeStream.foreachBatch(self.write_jdbc).start()
+        ds = sensor.writeStream.foreachBatch(self.write_jdbc).start()
+        return ds
 
 # Backup code
 # ###########

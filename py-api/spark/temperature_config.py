@@ -38,7 +38,6 @@ class TemperatureConfig():
 
     def start_working(self):
         sensor = self.df.filter("topic == 'temperature'")
-        sensor = sensor.withColumn("value", self.df.value.astype("string"))
         sensor = sensor.select(from_json(sensor.value, self.temp_schema).alias("data")).select(
             "data.*"
         )
@@ -46,4 +45,5 @@ class TemperatureConfig():
         # converting timestamp column to Timestamp type, somehow the conversion doesn't work from the start.
         sensor = sensor.withColumn("timestamp", sensor["timestamp"].cast(TimestampType()))
 
-        sensor.writeStream.foreachBatch(self.write_jdbc).start()
+        ds = sensor.writeStream.foreachBatch(self.write_jdbc).start()
+        return ds

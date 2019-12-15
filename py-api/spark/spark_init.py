@@ -23,7 +23,7 @@ packages = [
 
 os.environ[
     "PYSPARK_SUBMIT_ARGS"
-] = f"--master local --packages {','.join(packages)}  pyspark-shell"
+] = f"--master local[2] --packages {','.join(packages)}  pyspark-shell"
 os.environ["SPARK_HOME"] = "/home/elie/Applications/spark-2.4.4-bin-hadoop2.7"
 
 
@@ -32,16 +32,21 @@ class SparkInit:
         findspark.init()
         findspark.find()
 
-        self.spark = SparkSession.builder.appName("smarthome").getOrCreate()
+        self.spark = (
+            SparkSession.builder.config("spark.streaming.concurrentJobs", "3")
+            .config("spark.scheduler.mode", "FAIR")
+            .appName("smarthome")
+            .getOrCreate()
+        )
 
         self.df = (
             self.spark.readStream.format("kafka")
             .option("kafka.bootstrap.servers", "192.168.178.63:9092")
             .option("subscribe", "dust,temperature")
-            .option("startingOffsets", "earliest")
+            .option("startingOffsets", "latest")  # latest/earliest
             .load()
         )
-
+        self.df = self.df.withColumn("value", self.df.value.astype("string"))
         self.dust_config = DustConfig(self.spark, self.df)
         self.temperature_config = TemperatureConfig(self.spark, self.df)
 
@@ -49,7 +54,8 @@ class SparkInit:
         self.temperature_config.start_working()
         self.dust_config.start_working()
 
-        self.df.writeStream.format("console").outputMode("update").start().awaitTermination()
+        self.spark.streams.awaitAnyTermination()
+
 
 spark_init = SparkInit()
 spark_init.start()
