@@ -19,8 +19,9 @@ class Sensors:
     def start_temp(self):
         while True:
             dht = self.dht_instance.read_temp()
-            self.producer.send('temperature', value=dht)
-            # print(dht, end='\r')
+            if(dht['temperature']>-99):
+                self.producer.send('temperature', value=dht)
+                # print(dht, end='\r')
             time.sleep(2)
 
     def start_dust(self):

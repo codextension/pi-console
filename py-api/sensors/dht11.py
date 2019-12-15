@@ -49,10 +49,10 @@ class DHT11:
                 #print("Temperature: %-3.1f %sC, Humidity: %-3.1f %%" % (result.temperature,degree_sign,result.humidity), end='\r')
                 return {'temperature':result.temperature, 'humidity': result.humidity, 'timestamp': time.time()}
             else:
-                return {'temperature':0, 'humidity': 0, 'timestamp': time.time()}
+                return {'temperature':-99, 'humidity': -99, 'timestamp': time.time()}
         except KeyboardInterrupt:
             RPi.GPIO.cleanup()
-            return {'temperature':0, 'humidity': 0, 'timestamp': time.time()}
+            return {'temperature':-99, 'humidity': -99, 'timestamp': time.time()}
 
     def __read(self):
         RPi.GPIO.setup(self.__pin, RPi.GPIO.OUT)
