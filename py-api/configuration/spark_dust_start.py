@@ -18,10 +18,10 @@ packages = [
     "org.apache.spark:spark-sql_2.11:2.4.4",
 ]
 
-os.environ[
-    "PYSPARK_SUBMIT_ARGS"
-] = f"--master local --packages {','.join(packages)}  pyspark-shell"
-findspark.init("/home/elie/Applications/spark-2.4.4-bin-hadoop2.7")
+os.environ["PYSPARK_SUBMIT_ARGS"] = f"--master local --packages {','.join(packages)}  pyspark-shell"
+os.environ["SPARK_HOME"] = "/home/pi/workspace/spark-2.4.4-bin-hadoop2.7" # replace "workspace" with "Applications"
+
+findspark.init()
 findspark.find()
 
 # Reading the dust information from kafka, calculating thte average on a 1 minute window, then storing in an h2 database.
