@@ -26,14 +26,14 @@ class MCP3008:
 
     def __read_dust(self):
         # Initialising the PIN
-        self.__send_and_sleep(RPi.GPIO.LOW, 0.28)
+        self.__send_and_sleep(RPi.GPIO.LOW, 0.00028)
 
         # read from MCP3008
         dust_value = self.__analog_input(0)
         dust_voltage = (dust_value * 5) / 1024.0
         dust_density = (dust_voltage * 0.17 - 0.1) * 1000
         #print(f'Dust value: {dust_value}, Density: {dust_density}', end='\r')
-        time.sleep(0.004)
+        time.sleep(0.00004)
         # Done, reset the channel
         self.__send_and_sleep(RPi.GPIO.HIGH)
         return (dust_value, dust_voltage, dust_density)
@@ -47,15 +47,15 @@ class MCP3008:
     def read_dust(self):
         try:
             (dust_value, dust_voltage, dust_density) = self.__read_dust()
-            return {'value':dust_value, 'voltage':dust_voltage, 'density':dust_density}
+            return {'value':dust_value, 'voltage':dust_voltage, 'density':dust_density, 'timestamp': time.time()}
         except KeyboardInterrupt:
             RPi.GPIO.cleanup()
-            return {"density": 0}
+            return {'value':0, 'voltage':0, 'density':0, 'timestamp': time.time()}
 
     def read_noise(self):
         try:
             (noise_value, noise_intensity) = self.__read_noise()
-            return {'value': noise_value, 'intensity': noise_intensity}
+            return {'voltage': noise_value, 'intensity': noise_intensity}
         except KeyboardInterrupt:
             RPi.GPIO.cleanup()
-            return {'value': 0, 'intensity': 0}
+            return {'voltage': 0, 'intensity': 0}

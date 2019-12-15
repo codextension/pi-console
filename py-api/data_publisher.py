@@ -14,29 +14,28 @@ class Sensors:
         RPi.GPIO.setmode(RPi.GPIO.BCM)
         self.dht_instance = DHT11(18)
         self.mcp3008_instance = MCP3008(16)
-        self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
+        self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'],value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
     def start_temp(self):
         while True:
             dht = self.dht_instance.read_temp()
-            self.producer.send('temperature', key=b"temperature", value=json.dumps(dht["temperature"]).encode('utf-8'))
-            self.producer.send('temperature', key=b"humidity", value=json.dumps(dht["humidity"]).encode('utf-8'))
-            # print(dht, end='\r')
+            if(dht['temperature']>-99):
+                self.producer.send('temperature', value=dht)
+                # print(dht, end='\r')
             time.sleep(2)
 
     def start_dust(self):
         while True:
             dust = self.mcp3008_instance.read_dust()
-            self.producer.send('dust', key=b"density", value=json.dumps(dust["density"]).encode('utf-8'))
-            self.producer.send('dust', key=b"value", value=json.dumps(dust["value"]).encode('utf-8'))
-            self.producer.send('dust', key=b"voltage", value=json.dumps(dust["voltage"]).encode('utf-8'))
-            # print(f'Dust: {dust}', end='\r')
-            time.sleep(2)
+            if(dust['density']>=0):
+                self.producer.send('dust', value=dust)
+                #print(f'Dust: {dust}', end='\r')
+            time.sleep(0.5)
 
     def start_noise(self):
         while True:
             noise = self.mcp3008_instance.read_noise()
-            self.producer.send('noise', key=b"noise", value=json.dumps(noise["value"]).encode('utf-8'))
+            self.producer.send('noise', value=noise)
             # print(f'Noise:{noise}', end='\r')
             time.sleep(0.0001)
 
