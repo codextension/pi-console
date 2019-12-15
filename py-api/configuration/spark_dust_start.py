@@ -43,7 +43,7 @@ if __name__ == "__main__":
         )  # adding a db identifier
 
         df.write.format("jdbc").mode("append").options(
-            url="jdbc:h2:~/pi",
+            url="jdbc:h2:~/pi;AUTO_SERVER=TRUE",
             dbtable="dust",
             driver="org.h2.Driver",
             user="sa",
