@@ -24,7 +24,7 @@ packages = [
 os.environ[
     "PYSPARK_SUBMIT_ARGS"
 ] = f"--master local[2] --packages {','.join(packages)}  pyspark-shell"
-os.environ["SPARK_HOME"] = "/home/elie/Applications/spark-2.4.4-bin-hadoop2.7"
+os.environ["SPARK_HOME"] = "/home/pi/workspace/spark-2.4.4-bin-hadoop2.7"
 
 
 class SparkInit:
