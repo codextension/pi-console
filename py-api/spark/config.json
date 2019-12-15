@@ -1,0 +1,4 @@
+{
+    "spark_url":"/home/pi/workspace/spark-2.4.4-bin-hadoop2.7",
+    "kafka_url":"192.168.178.63:9092"
+}

@@ -7,7 +7,7 @@ from pyspark.sql.types import *
 from pyspark.sql.functions import *
 
 
-class TemperatureConfig():
+class TemperatureData():
 
     def __init__(self, spark, df):
         self.spark = spark

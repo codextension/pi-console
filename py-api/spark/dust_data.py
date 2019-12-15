@@ -7,7 +7,7 @@ from pyspark.sql.types import *
 from pyspark.sql.functions import *
 
 
-class DustConfig():
+class DustData():
 
     def __init__(self, spark, df):
         self.spark = spark

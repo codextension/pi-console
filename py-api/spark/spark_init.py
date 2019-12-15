@@ -1,13 +1,14 @@
 import findspark
 import os
 import threading
+import json
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import explode
 from pyspark.sql.functions import split
 from pyspark.sql.types import *
 from pyspark.sql.functions import *
-from dust_config import DustConfig
-from temperature_config import TemperatureConfig
+from dust_data import DustData
+from temperature_data import TemperatureData
 
 # Initialising pyspark (the spark runner)
 packages = [
@@ -24,11 +25,13 @@ packages = [
 os.environ[
     "PYSPARK_SUBMIT_ARGS"
 ] = f"--master local[2] --packages {','.join(packages)}  pyspark-shell"
-os.environ["SPARK_HOME"] = "/home/pi/workspace/spark-2.4.4-bin-hadoop2.7"
-
 
 class SparkInit:
     def __init__(self):
+        with open('config.json') as json_file:
+            self.config = json.load(json_file)
+        
+        os.environ["SPARK_HOME"] = self.config["spark_url"]
         findspark.init()
         findspark.find()
 
@@ -41,18 +44,18 @@ class SparkInit:
 
         self.df = (
             self.spark.readStream.format("kafka")
-            .option("kafka.bootstrap.servers", "192.168.178.63:9092")
+            .option("kafka.bootstrap.servers", self.config["kafka_url"])
             .option("subscribe", "dust,temperature")
             .option("startingOffsets", "latest")  # latest/earliest
             .load()
         )
         self.df = self.df.withColumn("value", self.df.value.astype("string"))
-        self.dust_config = DustConfig(self.spark, self.df)
-        self.temperature_config = TemperatureConfig(self.spark, self.df)
+        self.dust_data = DustData(self.spark, self.df)
+        self.temperature_data = TemperatureData(self.spark, self.df)
 
     def start(self):
-        self.temperature_config.start_working()
-        self.dust_config.start_working()
+        self.temperature_data.start_working()
+        self.dust_data.start_working()
 
         self.spark.streams.awaitAnyTermination()
 

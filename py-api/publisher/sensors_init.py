@@ -10,11 +10,14 @@ import json
 class Sensors:
 
     def __init__(self):
+        with open('config.json') as json_file:
+            self.config = json.load(json_file)
+
         RPi.GPIO.setwarnings(False)
         RPi.GPIO.setmode(RPi.GPIO.BCM)
         self.dht_instance = DHT11(18)
         self.mcp3008_instance = MCP3008(16)
-        self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'],value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+        self.producer = KafkaProducer(bootstrap_servers=self.config["kafka_url"],value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
     def start_temp(self):
         while True:
@@ -54,5 +57,4 @@ class Sensors:
 
 
 s = Sensors()
-
 s.start()
